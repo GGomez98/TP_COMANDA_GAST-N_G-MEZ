@@ -1,18 +1,20 @@
 <?php
 
 class Pedido{
-    private $id;
-    private $productos;
-    private $estado;
-    private $mesa;
-    private $codigoPedido;
-    private $tiempoRestante;
+    public $id;
+    public $productos;
+    public $estado;
+    public $codigoMesa;
+    public $codigoPedido;
+    public $tiempoRestante;
 
     public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (estado) VALUES ('Solicitado')");
-        $consulta->bindValue('Solicitado', $this->estado, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (estado, codigoMesa, codigoPedido) VALUES (:estado, :codigoMesa, :codigoPedido)");
+        $consulta->bindValue(':estado', 'realizado', PDO::PARAM_STR);
+        $consulta->bindValue(':codigoMesa', $this->codigoMesa, PDO::PARAM_STR);
+        $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -21,7 +23,7 @@ class Pedido{
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, estado FROM pedidos");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, estado, codigoMesa, codigoPedido FROM pedidos");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
