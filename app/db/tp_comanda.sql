@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 18:54:49
+-- Tiempo de generación: 14-06-2024 a las 05:46:37
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -106,8 +106,8 @@ INSERT INTO `estadospedido` (`id`, `nombre`) VALUES
 
 CREATE TABLE `mesas` (
   `id` int(11) NOT NULL,
-  `sector` varchar(256) NOT NULL,
-  `estado` varchar(256) NOT NULL,
+  `idSector` varchar(256) NOT NULL,
+  `idEstado` varchar(256) NOT NULL,
   `codigoMesa` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -115,8 +115,9 @@ CREATE TABLE `mesas` (
 -- Volcado de datos para la tabla `mesas`
 --
 
-INSERT INTO `mesas` (`id`, `sector`, `estado`, `codigoMesa`) VALUES
-(2, 'candy bar', 'cerrada', '451as');
+INSERT INTO `mesas` (`id`, `idSector`, `idEstado`, `codigoMesa`) VALUES
+(2, '1', '1', '451as'),
+(3, '3', '1', '35f43');
 
 -- --------------------------------------------------------
 
@@ -126,9 +127,9 @@ INSERT INTO `mesas` (`id`, `sector`, `estado`, `codigoMesa`) VALUES
 
 CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
-  `codigoMesa` varchar(11) NOT NULL,
-  `estado` varchar(11) NOT NULL,
-  `mozo` varchar(11) NOT NULL,
+  `idMesa` int(11) NOT NULL,
+  `idEstado` int(11) NOT NULL,
+  `idMozo` int(11) NOT NULL,
   `codigoPedido` varchar(5) NOT NULL,
   `fechaCreacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -137,8 +138,31 @@ CREATE TABLE `pedidos` (
 -- Volcado de datos para la tabla `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `codigoMesa`, `estado`, `mozo`, `codigoPedido`, `fechaCreacion`) VALUES
-(1, '451as', 'realizado', '', 's55d6', '0000-00-00');
+INSERT INTO `pedidos` (`id`, `idMesa`, `idEstado`, `idMozo`, `codigoPedido`, `fechaCreacion`) VALUES
+(1, 2, 1, 3, 's55d6', '0000-00-00'),
+(2, 2, 1, 2, '342df', '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `perfiles`
+--
+
+CREATE TABLE `perfiles` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `perfiles`
+--
+
+INSERT INTO `perfiles` (`id`, `nombre`) VALUES
+(1, 'Socio'),
+(2, 'Mozo'),
+(3, 'cocinero'),
+(4, 'bartender'),
+(5, 'cervecero');
 
 -- --------------------------------------------------------
 
@@ -162,17 +186,6 @@ INSERT INTO `productos` (`id`, `nombre`, `precio`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `puestos`
---
-
-CREATE TABLE `puestos` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `sectores`
 --
 
@@ -180,6 +193,16 @@ CREATE TABLE `sectores` (
   `id` int(11) NOT NULL,
   `nombre` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `sectores`
+--
+
+INSERT INTO `sectores` (`id`, `nombre`) VALUES
+(1, 'Barra'),
+(2, 'Patio'),
+(3, 'Cocina'),
+(4, 'Candy Bar');
 
 -- --------------------------------------------------------
 
@@ -191,8 +214,8 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `usuario` varchar(250) NOT NULL,
   `clave` varchar(250) NOT NULL,
-  `perfil` varchar(250) NOT NULL,
-  `sector` varchar(250) DEFAULT NULL,
+  `idPerfil` int(250) NOT NULL,
+  `idSector` int(250) DEFAULT NULL,
   `fechaBaja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -200,12 +223,14 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `perfil`, `sector`, `fechaBaja`) VALUES
-(1, 'franco', 'Hsu23sDsjseWs', 'socio', NULL, NULL),
-(2, 'pedro', 'dasdqsdw2sd23', 'mozo', 'candy bar', NULL),
-(3, 'jorge', 'sda2s2f332f2', 'cocinero', 'cocina', NULL),
-(4, 'cesar', '$2y$10$yGxD1Z.HFXXIX4AmcwLN5uJ7kvaF6l7z2eZ05Cm05wFe0UreGAzsm', 'mozo', 'cocina', NULL),
-(5, 'alberto', '$2y$10$JGyJ1BbKmLGcaTIl2KkQguPNNm7YRVHzvtSCh8NYerGhc3nIIXECK', 'cocinero', 'candy bar', NULL);
+INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `idPerfil`, `idSector`, `fechaBaja`) VALUES
+(2, 'pedro', 'dasdqsdw2sd23', 2, 1, NULL),
+(3, 'jorge', 'sda2s2f332f2', 3, 2, NULL),
+(4, 'cesar', '$2y$10$yGxD1Z.HFXXIX4AmcwLN5uJ7kvaF6l7z2eZ05Cm05wFe0UreGAzsm', 4, 3, NULL),
+(5, 'alberto', '$2y$10$JGyJ1BbKmLGcaTIl2KkQguPNNm7YRVHzvtSCh8NYerGhc3nIIXECK', 2, 4, NULL),
+(6, 'santiago', '$2y$10$XImH1gZjHgAZcE4dJNoZnuLfAqO2QwiXBrF6YEf.z3ZhEeb8yzE5e', 3, 4, NULL),
+(9, 'carlos', '$2y$10$SEnQAoTCUcsL8M4a.I2r9uIBH0Xdzx0hSHmC7/bW4gcm8zxRk5XQq', 5, 2, NULL),
+(10, 'abel', '$2y$10$fO7/cipDqASxp/4bKRabg.s0T5/N1BXz2UqnEIAgvZ5zMPmg8WEFK', 1, 1, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -242,15 +267,15 @@ ALTER TABLE `pedidos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `productos`
+-- Indices de la tabla `perfiles`
 --
-ALTER TABLE `productos`
+ALTER TABLE `perfiles`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `puestos`
+-- Indices de la tabla `productos`
 --
-ALTER TABLE `puestos`
+ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -291,13 +316,19 @@ ALTER TABLE `estadospedido`
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `perfiles`
+--
+ALTER TABLE `perfiles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -306,22 +337,16 @@ ALTER TABLE `productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `puestos`
---
-ALTER TABLE `puestos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `sectores`
 --
 ALTER TABLE `sectores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

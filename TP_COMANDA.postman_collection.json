@@ -62,23 +62,24 @@
 					"formdata": [
 						{
 							"key": "usuario",
-							"value": "alberto",
+							"value": "abel",
 							"type": "text"
 						},
 						{
 							"key": "clave",
-							"value": "e4345d",
+							"value": "54d5s",
 							"type": "text"
 						},
 						{
 							"key": "perfil",
-							"value": "cocinero",
+							"value": "socio",
 							"type": "text"
 						},
 						{
 							"key": "sector",
-							"value": "candy bar",
-							"type": "text"
+							"value": "patio",
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
@@ -159,7 +160,12 @@
 					"formdata": [
 						{
 							"key": "codigoMesa",
-							"value": "451as",
+							"value": "35f43",
+							"type": "text"
+						},
+						{
+							"key": "sector",
+							"value": "cocina",
 							"type": "text"
 						}
 					]
@@ -219,7 +225,12 @@
 						},
 						{
 							"key": "codigoPedido",
-							"value": "s55d6",
+							"value": "342df",
+							"type": "text"
+						},
+						{
+							"key": "mozo",
+							"value": "pedro",
 							"type": "text"
 						}
 					]
