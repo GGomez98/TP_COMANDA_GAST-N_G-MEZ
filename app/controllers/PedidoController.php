@@ -10,11 +10,14 @@ class PedidoController extends Pedido implements IApiUsable
 
         $codigoPedido = $parametros['codigoPedido'];
         $codigoMesa = $parametros['codigoMesa'];
+        $mozo = $parametros['mozo'];
 
         // Creamos el Pedido
         $ped = new Pedido();
         $ped->codigoPedido = $codigoPedido;
         $ped->codigoMesa = $codigoMesa;
+        $ped->estado = 'Realizado';
+        $ped->mozo = $mozo;
         $ped->crearPedido();
 
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));

@@ -8,15 +8,22 @@ class Usuario
     public $perfil;
     public $sector;
 
+    private function obtenerId($table, $param, $atributte){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $stmt = $objAccesoDatos->prepararConsulta("SELECT id FROM ".$table." WHERE nombre = ".$param);
+        $stmt->execute([$param => $atributte]);
+        return $stmt->fetchColumn();
+    }
+
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, perfil, sector) VALUES (:usuario, :clave, :perfil, :sector)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, idPerfil, idSector) VALUES (:usuario, :clave, :idPerfil, :idSector)");
         $claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $claveHash);
-        $consulta->bindValue(':perfil', $this->perfil, PDO::PARAM_STR);
-        $consulta->bindValue(':sector', $this->sector, PDO::PARAM_STR);
+        $consulta->bindValue(':idPerfil', $this->obtenerId("perfiles",":nombrePerfil", $this->perfil), PDO::PARAM_INT);
+        $consulta->bindValue(':idSector', $this->obtenerId("sectores", ":nombreSector", $this->sector), PDO::PARAM_INT);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -25,7 +32,7 @@ class Usuario
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave, perfil, sector FROM usuarios");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil, sectores.nombre as sector FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil JOIN sectores on sectores.id = usuarios.idSector");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
