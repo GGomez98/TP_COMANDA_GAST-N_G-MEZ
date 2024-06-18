@@ -19,6 +19,7 @@ require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
+require_once './middlewares/DatosMiddleware.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -37,24 +38,33 @@ $app->addBodyParsingMiddleware();
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
-    $group->post('[/]', \UsuarioController::class . ':CargarUno');
+    $group->post('[/]', \UsuarioController::class . ':CargarUno')
+          ->add(\DatosMiddleware::class . ":cargarUserMW");
   });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \ProductoController::class . ':TraerTodos');
-    $group->post('[/]', \ProductoController::class . ':CargarUno');
+    $group->get('/{nombre}', \ProductoController::class . ':TraerUno');
+    $group->post('[/]', \ProductoController::class . ':CargarUno')
+          ->add(\DatosMiddleware::class . ":cargarProductoMW");
 });
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
-  $group->post('[/]', \MesaController::class . ':CargarUno');
+  $group->post('[/]', \MesaController::class . ':CargarUno')
+        ->add(\DatosMiddleware::class . ":cargarMesaMW");
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
-  $group->post('[/]', \PedidoController::class . ':CargarUno');
+  $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
+  $group->post('[/]', \PedidoController::class . ':CargarUno')
+        ->add(\DatosMiddleware::class . ":cargarPedidoMW");
 });
 
+$app->group('/agregarProducto', function (RouteCollectorProxy $group){
+  $group->post('[/]', \PedidoController::class . ':AgregarProd');
+});
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));

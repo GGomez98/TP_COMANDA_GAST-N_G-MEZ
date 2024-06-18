@@ -29,11 +29,23 @@ class PedidoController extends Pedido implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
+      // Buscamos pedido por codigoPedido
+      $ped = $args['codigoPedido'];
+      $pedido = Pedido::obtenerPedido($ped);
+      $pedido->productos = $pedido->obtenerProductosDelPedido();
+      $payload = json_encode($pedido);
+
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
     }
 
     public function TraerTodos($request, $response, $args)
     {
         $lista = Pedido::obtenerTodos();
+        foreach($lista as $pedido){
+          $pedido->productos = $pedido->obtenerProductosDelPedido();
+        }
         $payload = json_encode(array("listaPedido" => $lista));
 
         $response->getBody()->write($payload);
@@ -47,5 +59,22 @@ class PedidoController extends Pedido implements IApiUsable
 
     public function BorrarUno($request, $response, $args)
     {
+    }
+
+    public function AgregarProd($request, $response, $args){
+      $parametros = $request->getParsedBody();
+
+      $producto = $parametros['producto'];
+      $codigoPedido = $parametros['codigoPedido'];
+
+      $ped = Pedido::obtenerPedido($codigoPedido);
+
+      $ped->agregarProducto($producto);
+
+      $payload = json_encode(array("mensaje" => "El producto se cargo al pedido"));
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
     }
 }

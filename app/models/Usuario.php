@@ -6,7 +6,6 @@ class Usuario
     public $usuario;
     public $clave;
     public $perfil;
-    public $sector;
 
     private function obtenerId($table, $param, $atributte){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -18,12 +17,11 @@ class Usuario
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, idPerfil, idSector) VALUES (:usuario, :clave, :idPerfil, :idSector)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, idPerfil) VALUES (:usuario, :clave, :idPerfil)");
         $claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $claveHash);
         $consulta->bindValue(':idPerfil', $this->obtenerId("perfiles",":nombrePerfil", $this->perfil), PDO::PARAM_INT);
-        $consulta->bindValue(':idSector', $this->obtenerId("sectores", ":nombreSector", $this->sector), PDO::PARAM_INT);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -32,7 +30,7 @@ class Usuario
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil, sectores.nombre as sector FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil JOIN sectores on sectores.id = usuarios.idSector");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
@@ -41,7 +39,7 @@ class Usuario
     public static function obtenerUsuario($usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave, perfil, sector FROM usuarios WHERE usuario = :usuario");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil WHERE usuario = :usuario");
         $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
         $consulta->execute();
 

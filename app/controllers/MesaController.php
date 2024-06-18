@@ -9,12 +9,10 @@ class MesaController extends Mesa implements IApiUsable
         $parametros = $request->getParsedBody();
 
         $codigoMesa = $parametros['codigoMesa'];
-        $sector = $parametros['sector'];
 
         // Creamos el Mesa
         $mesa = new Mesa();
         $mesa->codigoMesa = $codigoMesa;
-        $mesa->sector = $sector;
         $mesa->estado = 'Cerrada';
         $mesa->crearMesa();
 
