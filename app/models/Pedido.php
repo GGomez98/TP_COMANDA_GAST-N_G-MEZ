@@ -30,6 +30,7 @@ class Pedido{
     }
     public function crearPedido()
     {
+        $this->estado = "Realizado";
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (idEstado, idMesa, idMozo, codigoPedido) VALUES (:idEstado, :idMesa, :idMozo, :codigoPedido)");
         $consulta->bindValue(':idEstado', $this->obtenerId("estadospedido",":estado",$this->estado), PDO::PARAM_INT);
@@ -77,5 +78,37 @@ class Pedido{
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
+    }
+
+    public function cambiarEstadoPedido(){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        switch($this->estado){
+            case 'realizado':
+                $this->estado = 'Listo para preparar';
+                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 2 WHERE codigoPedido = :codigoPedido");
+                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+                $consulta->execute();
+            break;
+            case 'listo para preparar':
+                $this->estado = 'En preparacion';
+                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 3 WHERE codigoPedido = :codigoPedido");
+                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+                $consulta->execute();
+            break;
+            case 'en preparacion':
+                $this->estado = 'Listo para servir';
+                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 4 WHERE codigoPedido = :codigoPedido");
+                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+                $consulta->execute();
+            break;
+            case 'listo para servir':
+                $this->estado = 'Entregado';
+                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 5 WHERE codigoPedido = :codigoPedido");
+                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+                $consulta->execute();
+            break;
+            default:
+                return false;
+        }
     }
 }

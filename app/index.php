@@ -60,11 +60,11 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')
         ->add(\DatosMiddleware::class . ":cargarPedidoMW");
+  $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd');
+  $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController');
 });
 
-$app->group('/agregarProducto', function (RouteCollectorProxy $group){
-  $group->post('[/]', \PedidoController::class . ':AgregarProd');
-});
+
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));

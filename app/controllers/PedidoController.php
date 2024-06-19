@@ -16,7 +16,6 @@ class PedidoController extends Pedido implements IApiUsable
         $ped = new Pedido();
         $ped->codigoPedido = $codigoPedido;
         $ped->codigoMesa = $codigoMesa;
-        $ped->estado = 'Realizado';
         $ped->mozo = $mozo;
         $ped->crearPedido();
 
@@ -72,6 +71,29 @@ class PedidoController extends Pedido implements IApiUsable
       $ped->agregarProducto($producto);
 
       $payload = json_encode(array("mensaje" => "El producto se cargo al pedido"));
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function CambiarEstadoPedidoController($request, $response, $args){
+      $parametros = $request->getParsedBody();
+
+      $codigoPedido = $parametros['codigoPedido'];
+
+      $ped = Pedido::obtenerPedido($codigoPedido);
+
+      $ped->cambiarEstadoPedido();
+
+      echo $ped->cambiarEstadoPedido();
+
+      if($ped->estado === 'entregado' || $ped->estado === 'cancelado'){
+        $payload = json_encode(array("mensaje" => "El pedido ya fue entregado o fue cancelado y no se puede modificar su estado"));
+      }
+      else{
+        $payload = json_encode(array("mensaje" => "Se cambio el estado del pedido"));
+      }
 
         $response->getBody()->write($payload);
         return $response
