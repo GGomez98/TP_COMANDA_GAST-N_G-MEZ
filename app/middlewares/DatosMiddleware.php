@@ -74,4 +74,40 @@ class DatosMiddleware{
 
         return $response;
     }
+
+    public function accionPedidoMW(Request $request, RequestHandler $handler){
+        $paramsQuery = $request->getQueryParams();
+        $paramsBody = $request->getParsedBody();
+
+        if (isset($paramsQuery["usuario"], $paramsQuery["clave"], $paramsBody["codigoPedido"])) {
+            // ENTRO AL VERBO / PROXIMO MW
+            $response = $handler->handle($request);
+        } else {
+            // SI NO ENTRO AL VERBO, QUIERO UNA NUEVA RESPONSE.
+            $response = new Response();
+            $response->getBody()->write(json_encode(array("error" => "Faltan parametros")));
+            return $response;
+        }
+
+        return $response;
+    }
+
+    public function agregarProductoAPedidoMW(Request $request, RequestHandler $handler)
+    {
+        // SE EJECUTA ANTES
+        $params = $request->getParsedBody();
+        $paramsQuery = $request->getQueryParams();
+
+        if (isset($params["producto"], $params["codigoPedido"], $paramsQuery['usuario'])) {
+            // ENTRO AL VERBO / PROXIMO MW
+            $response = $handler->handle($request);
+        } else {
+            // SI NO ENTRO AL VERBO, QUIERO UNA NUEVA RESPONSE.
+            $response = new Response();
+            $response->getBody()->write(json_encode(array("error" => "Faltan parametros")));
+            return $response;
+        }
+
+        return $response;
+    }
 }

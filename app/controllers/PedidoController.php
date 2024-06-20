@@ -69,8 +69,12 @@ class PedidoController extends Pedido implements IApiUsable
       $ped = Pedido::obtenerPedido($codigoPedido);
 
       $ped->agregarProducto($producto);
-
-      $payload = json_encode(array("mensaje" => "El producto se cargo al pedido"));
+      if($ped->estado == 'realizado'){
+        $payload = json_encode(array("mensaje" => "El producto se cargo al pedido"));
+      }
+      else{
+        $payload = json_encode(array("mensaje" => "El pedido no se encuentra en estado realizado, no se pueden cargar productos"));
+      }
 
         $response->getBody()->write($payload);
         return $response
@@ -84,15 +88,32 @@ class PedidoController extends Pedido implements IApiUsable
 
       $ped = Pedido::obtenerPedido($codigoPedido);
 
-      $ped->cambiarEstadoPedido();
-
-      echo $ped->cambiarEstadoPedido();
-
       if($ped->estado === 'entregado' || $ped->estado === 'cancelado'){
-        $payload = json_encode(array("mensaje" => "El pedido ya fue entregado o fue cancelado y no se puede modificar su estado"));
+        $payload = json_encode(array("mensaje" => "El pedido ya fue entregado o cancelado y no se puede modificar su estado"));
       }
       else{
+        $ped->cambiarEstadoPedido();
         $payload = json_encode(array("mensaje" => "Se cambio el estado del pedido"));
+      }
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function CancelarPedidoController($request, $response, $args){
+      $parametros = $request->getParsedBody();
+
+      $codigoPedido = $parametros['codigoPedido'];
+
+      $ped = Pedido::obtenerPedido($codigoPedido);
+
+      if($ped->estado === 'entregado' || $ped->estado === 'cancelado'){
+        $payload = json_encode(array("mensaje" => "El pedido ya fue entregado o cancelado y no se puede cancelar"));
+      }
+      else{
+        $ped->cancelarPedido();
+        $payload = json_encode(array("mensaje" => "Se cancelo pedido"));
       }
 
         $response->getBody()->write($payload);

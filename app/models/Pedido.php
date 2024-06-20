@@ -111,4 +111,12 @@ class Pedido{
                 return false;
         }
     }
+
+    public function cancelarPedido(){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $this->estado = 'cancelado';
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 6 WHERE codigoPedido = :codigoPedido");
+        $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+        $consulta->execute();
+    }
 }

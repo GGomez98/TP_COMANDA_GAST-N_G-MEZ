@@ -20,6 +20,7 @@ require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './middlewares/DatosMiddleware.php';
+require_once './middlewares/RolMiddleware.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -60,8 +61,14 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')
         ->add(\DatosMiddleware::class . ":cargarPedidoMW");
-  $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd');
-  $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController');
+  $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd')
+      ->add(new RolMiddleware("Mozo"))
+      ->add(\DatosMiddleware::class . ":agregarProductoAPedidoMW");
+  $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController')
+        ->add(\RolMiddleware::class . ":cambiarEstadoPedidoMW")      
+        ->add(\DatosMiddleware::class . ":accionPedidoMW");
+  $group->post('/cancelarPedido', \PedidoController::class . ':CancelarPedidoController')
+        ->add(\DatosMiddleware::class . ":accionPedidoMW");
 });
 
 
