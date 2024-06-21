@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-06-2024 a las 05:46:37
+-- Tiempo de generación: 21-06-2024 a las 04:33:22
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -101,12 +101,33 @@ INSERT INTO `estadospedido` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `menu`
+--
+
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(256) NOT NULL,
+  `precio` float NOT NULL,
+  `idSector` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `menu`
+--
+
+INSERT INTO `menu` (`id`, `nombre`, `precio`, `idSector`) VALUES
+(1, 'Agua', 1000, 0),
+(2, 'Milanesa', 3000, 3),
+(3, 'Cerveza', 3000, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `mesas`
 --
 
 CREATE TABLE `mesas` (
   `id` int(11) NOT NULL,
-  `idSector` varchar(256) NOT NULL,
   `idEstado` varchar(256) NOT NULL,
   `codigoMesa` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -115,9 +136,11 @@ CREATE TABLE `mesas` (
 -- Volcado de datos para la tabla `mesas`
 --
 
-INSERT INTO `mesas` (`id`, `idSector`, `idEstado`, `codigoMesa`) VALUES
-(2, '1', '1', '451as'),
-(3, '3', '1', '35f43');
+INSERT INTO `mesas` (`id`, `idEstado`, `codigoMesa`) VALUES
+(2, '1', '451as'),
+(3, '1', '35f43'),
+(4, '1', '654ss'),
+(5, '1', '4s4da');
 
 -- --------------------------------------------------------
 
@@ -140,7 +163,10 @@ CREATE TABLE `pedidos` (
 
 INSERT INTO `pedidos` (`id`, `idMesa`, `idEstado`, `idMozo`, `codigoPedido`, `fechaCreacion`) VALUES
 (1, 2, 1, 3, 's55d6', '0000-00-00'),
-(2, 2, 1, 2, '342df', '0000-00-00');
+(2, 2, 5, 2, '342df', '0000-00-00'),
+(3, 4, 1, 2, 's5d4s', '0000-00-00'),
+(4, 4, 1, 2, '5d6sd', '0000-00-00'),
+(5, 4, 1, 2, 'sd5er', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -167,21 +193,28 @@ INSERT INTO `perfiles` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `productos`
+-- Estructura de tabla para la tabla `productospedidos`
 --
 
-CREATE TABLE `productos` (
+CREATE TABLE `productospedidos` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(256) NOT NULL,
-  `precio` float NOT NULL
+  `idProducto` int(11) NOT NULL,
+  `idPedido` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `productos`
+-- Volcado de datos para la tabla `productospedidos`
 --
 
-INSERT INTO `productos` (`id`, `nombre`, `precio`) VALUES
-(1, 'Agua', 1000);
+INSERT INTO `productospedidos` (`id`, `idProducto`, `idPedido`) VALUES
+(3, 1, 1),
+(4, 3, 2),
+(5, 2, 2),
+(6, 2, 2),
+(7, 2, 2),
+(8, 2, 3),
+(12, 2, 3),
+(13, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -215,7 +248,6 @@ CREATE TABLE `usuarios` (
   `usuario` varchar(250) NOT NULL,
   `clave` varchar(250) NOT NULL,
   `idPerfil` int(250) NOT NULL,
-  `idSector` int(250) DEFAULT NULL,
   `fechaBaja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -223,14 +255,16 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `idPerfil`, `idSector`, `fechaBaja`) VALUES
-(2, 'pedro', 'dasdqsdw2sd23', 2, 1, NULL),
-(3, 'jorge', 'sda2s2f332f2', 3, 2, NULL),
-(4, 'cesar', '$2y$10$yGxD1Z.HFXXIX4AmcwLN5uJ7kvaF6l7z2eZ05Cm05wFe0UreGAzsm', 4, 3, NULL),
-(5, 'alberto', '$2y$10$JGyJ1BbKmLGcaTIl2KkQguPNNm7YRVHzvtSCh8NYerGhc3nIIXECK', 2, 4, NULL),
-(6, 'santiago', '$2y$10$XImH1gZjHgAZcE4dJNoZnuLfAqO2QwiXBrF6YEf.z3ZhEeb8yzE5e', 3, 4, NULL),
-(9, 'carlos', '$2y$10$SEnQAoTCUcsL8M4a.I2r9uIBH0Xdzx0hSHmC7/bW4gcm8zxRk5XQq', 5, 2, NULL),
-(10, 'abel', '$2y$10$fO7/cipDqASxp/4bKRabg.s0T5/N1BXz2UqnEIAgvZ5zMPmg8WEFK', 1, 1, NULL);
+INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `idPerfil`, `fechaBaja`) VALUES
+(2, 'pedro', 'dasdqsdw2sd23', 2, NULL),
+(3, 'jorge', 'sda2s2f332f2', 3, NULL),
+(4, 'cesar', '$2y$10$yGxD1Z.HFXXIX4AmcwLN5uJ7kvaF6l7z2eZ05Cm05wFe0UreGAzsm', 4, NULL),
+(5, 'alberto', '$2y$10$JGyJ1BbKmLGcaTIl2KkQguPNNm7YRVHzvtSCh8NYerGhc3nIIXECK', 2, NULL),
+(6, 'santiago', '$2y$10$XImH1gZjHgAZcE4dJNoZnuLfAqO2QwiXBrF6YEf.z3ZhEeb8yzE5e', 3, NULL),
+(9, 'carlos', '$2y$10$SEnQAoTCUcsL8M4a.I2r9uIBH0Xdzx0hSHmC7/bW4gcm8zxRk5XQq', 5, NULL),
+(10, 'abel', '$2y$10$fO7/cipDqASxp/4bKRabg.s0T5/N1BXz2UqnEIAgvZ5zMPmg8WEFK', 1, NULL),
+(11, 'Luciano', '$2y$10$VWeAjrLtLEoJZ7yGAzseOOlRkMFyBXCNpcgVLZPB8NFEORIJqn8eK', 2, NULL),
+(13, 'Marcos', '$2y$10$1P9TyjGkVIdASMoyB3b7SOyCNVDj6HcZu1Lv12PTF38muLcvYctuG', 3, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -255,6 +289,12 @@ ALTER TABLE `estadospedido`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `mesas`
 --
 ALTER TABLE `mesas`
@@ -273,9 +313,9 @@ ALTER TABLE `perfiles`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `productos`
+-- Indices de la tabla `productospedidos`
 --
-ALTER TABLE `productos`
+ALTER TABLE `productospedidos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -313,16 +353,22 @@ ALTER TABLE `estadospedido`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -331,22 +377,22 @@ ALTER TABLE `perfiles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `productos`
+-- AUTO_INCREMENT de la tabla `productospedidos`
 --
-ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `productospedidos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `sectores`
 --
 ALTER TABLE `sectores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
