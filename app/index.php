@@ -41,6 +41,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno')
           ->add(\DatosMiddleware::class . ":cargarUserMW");
+    $group->post('/cargarCSV',\UsuarioController::class . ':CargarUsuarioDesdeCSVController');
   });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {

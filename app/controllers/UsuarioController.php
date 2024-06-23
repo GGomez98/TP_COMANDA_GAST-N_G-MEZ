@@ -75,4 +75,18 @@ class UsuarioController extends Usuario implements IApiUsable
         return $response
           ->withHeader('Content-Type', 'application/json');
     }
+
+    public function CargarUsuarioDesdeCSVController($request, $response, $args){
+      $uploadedFiles = $request->getUploadedFiles();
+      $csvFile = $uploadedFiles['csv'];
+      
+      if ($csvFile->getError() === UPLOAD_ERR_OK) {
+        Usuario::cargarUsuariosPorCSV($csvFile);
+        $response->getBody()->write('Archivo CSV procesado exitosamente.');
+        return $response->withStatus(200);
+      }
+
+      $response->getBody()->write('Error al cargar el archivo.');
+      return $response->withStatus(400);
+    }
 }

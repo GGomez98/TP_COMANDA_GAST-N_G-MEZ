@@ -65,4 +65,45 @@ class Usuario
         $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));
         $consulta->execute();
     }
+
+    public static function cargarUsuariosPorCSV($csv){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs\\'.$csv->getClientFilename();
+
+        $csv->moveTo($filePath);
+
+        $file = fopen($filePath, 'r');
+
+        $firstLine = true;
+
+        while (($data = fgetcsv($file)) !== FALSE) {
+            // Omitir la primera línea si contiene encabezados
+            if ($firstLine) {
+                $firstLine = false;
+                continue;
+            }
+
+            $usuario = $data[0];
+            $clave = $data[1];
+            $perfil = $data[2];
+            
+            // Hashear la clave antes de guardarla en la base de datos
+            $hashedClave = password_hash($clave, PASSWORD_DEFAULT);
+
+            $usr = new Usuario();
+            $usr->usuario = $usuario;
+            $usr->clave = $hashedClave;
+            $usr->perfil = $perfil;
+
+            $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, idPerfil) VALUES (:usuario, :clave, :idPerfil)");
+            $consulta->bindValue(':idPerfil', $usr->obtenerId("perfiles",":nombrePerfil", $usr->perfil), PDO::PARAM_INT);
+            $consulta->bindValue(':clave', $usr->clave, PDO::PARAM_STR);
+            $consulta->bindValue(':usuario', $usr->usuario, PDO::PARAM_STR);
+            $consulta->execute();
+        }
+
+        fclose($file);
+
+        return $objAccesoDatos->obtenerUltimoId();
+    }
 }
