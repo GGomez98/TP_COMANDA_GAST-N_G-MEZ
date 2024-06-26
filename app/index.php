@@ -41,7 +41,8 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno')
           ->add(\DatosMiddleware::class . ":cargarUserMW");
-    $group->post('/cargarCSV',\UsuarioController::class . ':CargarUsuarioDesdeCSVController');
+    $group->post('/cargarCSV',\UsuarioController::class . ':CargarUsuariosDesdeCSVController');
+    $group->post('/descargarCSV',\UsuarioController::class . ':GuardarUsuariosEnCSV');
   });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
@@ -49,12 +50,16 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->get('/{nombre}', \ProductoController::class . ':TraerUno');
     $group->post('[/]', \ProductoController::class . ':CargarUno')
           ->add(\DatosMiddleware::class . ":cargarProductoMW");
+    $group->post('/cargarCSV',\ProductoController::class . ':CargarProductosDesdeCSVController');
+    $group->post('/descargarCSV',\ProductoController::class . ':GuardarProductosEnCSV');
 });
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
   $group->post('[/]', \MesaController::class . ':CargarUno')
         ->add(\DatosMiddleware::class . ":cargarMesaMW");
+  $group->post('/cargarCSV',\MesaController::class . ':CargarMesasDesdeCSVController');
+  $group->post('/descargarCSV',\MesaController::class . ':GuardarMesasEnCSV');
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
@@ -70,6 +75,8 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
   $group->post('/cancelarPedido', \PedidoController::class . ':CancelarPedidoController')
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
+  $group->post('/cargarCSV',\PedidoController::class . ':CargarProductosDesdeCSVController');
+  $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
 });
 
 

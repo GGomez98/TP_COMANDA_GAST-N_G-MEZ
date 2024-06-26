@@ -120,4 +120,31 @@ class PedidoController extends Pedido implements IApiUsable
         return $response
           ->withHeader('Content-Type', 'application/json');
     }
+
+    public function CargarProductosDesdeCSVController($request, $response, $args){
+      $uploadedFiles = $request->getUploadedFiles();
+      $csvFile = $uploadedFiles['csv'];
+      
+      if ($csvFile->getError() === UPLOAD_ERR_OK) {
+        Pedido::cargarPedidosPorCSV($csvFile);
+        $response->getBody()->write('Archivo CSV procesado exitosamente.');
+        return $response->withStatus(200);
+      }
+
+      $response->getBody()->write('Error al cargar el archivo.');
+      return $response->withStatus(400);
+    }
+
+    public function GuardarPedidosEnCSV($request, $response, $args){
+      $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs_Cargados'.DIRECTORY_SEPARATOR.'pedidos.csv';
+
+      Pedido::cargarPedidosACSV($filePath);
+
+      $payload = json_encode(array("mensaje" => "El archivo se descargo exitosamente"));
+
+        $response->getBody()->write($payload);
+
+      return $response->withHeader('Content-Type', 'application/csv')
+                    ->withHeader('Content-Disposition', 'attachment; filename="pedidos.csv"');
+    }
 }

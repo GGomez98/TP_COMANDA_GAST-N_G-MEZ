@@ -53,4 +53,31 @@ class ProductoController extends Producto implements IApiUsable
     public function BorrarUno($request, $response, $args)
     {
     }
+
+    public function CargarProductosDesdeCSVController($request, $response, $args){
+      $uploadedFiles = $request->getUploadedFiles();
+      $csvFile = $uploadedFiles['csv'];
+      
+      if ($csvFile->getError() === UPLOAD_ERR_OK) {
+        Producto::cargarProductosPorCSV($csvFile);
+        $response->getBody()->write('Archivo CSV procesado exitosamente.');
+        return $response->withStatus(200);
+      }
+
+      $response->getBody()->write('Error al cargar el archivo.');
+      return $response->withStatus(400);
+    }
+
+    public function GuardarProductosEnCSV($request, $response, $args){
+      $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs_Cargados'.DIRECTORY_SEPARATOR.'productos.csv';
+
+      Producto::cargarProductosACSV($filePath);
+
+      $payload = json_encode(array("mensaje" => "El archivo se descargo exitosamente"));
+
+        $response->getBody()->write($payload);
+
+      return $response->withHeader('Content-Type', 'application/csv')
+                    ->withHeader('Content-Disposition', 'attachment; filename="pedidos.csv"');
+    }
 }

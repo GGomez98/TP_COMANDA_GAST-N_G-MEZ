@@ -76,7 +76,7 @@ class UsuarioController extends Usuario implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 
-    public function CargarUsuarioDesdeCSVController($request, $response, $args){
+    public function CargarUsuariosDesdeCSVController($request, $response, $args){
       $uploadedFiles = $request->getUploadedFiles();
       $csvFile = $uploadedFiles['csv'];
       
@@ -88,5 +88,18 @@ class UsuarioController extends Usuario implements IApiUsable
 
       $response->getBody()->write('Error al cargar el archivo.');
       return $response->withStatus(400);
+    }
+
+    public function GuardarUsuariosEnCSV($request, $response, $args){
+      $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs_Cargados'.DIRECTORY_SEPARATOR.'usuarios.csv';
+
+      Usuario::cargarUsuariosACSV($filePath);
+
+      $payload = json_encode(array("mensaje" => "El archivo se descargo exitosamente"));
+
+        $response->getBody()->write($payload);
+
+      return $response->withHeader('Content-Type', 'application/csv')
+                    ->withHeader('Content-Disposition', 'attachment; filename="usuarios.csv"');
     }
 }

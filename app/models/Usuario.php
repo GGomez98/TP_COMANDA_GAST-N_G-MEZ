@@ -68,7 +68,7 @@ class Usuario
 
     public static function cargarUsuariosPorCSV($csv){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs\\'.$csv->getClientFilename();
+        $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs_Leidos\\'.$csv->getClientFilename();
 
         $csv->moveTo($filePath);
 
@@ -101,9 +101,32 @@ class Usuario
             $consulta->bindValue(':usuario', $usr->usuario, PDO::PARAM_STR);
             $consulta->execute();
         }
-
+        
         fclose($file);
 
         return $objAccesoDatos->obtenerUltimoId();
+    }
+
+    public static function cargarUsuariosACSV($filePath){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+
+        $stmt = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil");
+        $stmt->execute();
+        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $exportDir = dirname($filePath);
+        if (!is_dir($exportDir)) {
+            mkdir($exportDir, 0777, true);
+        }
+
+        $file = fopen($filePath, 'w');
+
+        fputcsv($file, ['usuario', 'clave', 'perfil']);
+
+        foreach ($usuarios as $usuario) {
+            fputcsv($file, $usuario);
+        }
+
+        fclose($file);
     }
 }

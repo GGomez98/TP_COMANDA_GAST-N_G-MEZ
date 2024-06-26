@@ -119,4 +119,66 @@ class Pedido{
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->execute();
     }
+
+    public static function cargarPedidosPorCSV($csv){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'CSVs_Leidos\\'.$csv->getClientFilename();
+
+        $csv->moveTo($filePath);
+
+        $file = fopen($filePath, 'r');
+
+        $firstLine = true;
+
+        while (($data = fgetcsv($file)) !== FALSE) {
+            // Omitir la primera línea si contiene encabezados
+            if ($firstLine) {
+                $firstLine = false;
+                continue;
+            }
+
+            $codigoPedido = $data[0];
+            $codigoMesa = $data[1];
+            $mozo = $data[2];
+
+            $usr = new Pedido();
+            $usr->codigoPedido = $codigoPedido;
+            $usr->codigoMesa = $codigoMesa;
+            $usr->mozo = $mozo;
+
+            $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (idEstado, idMesa, idMozo, codigoPedido) VALUES (:idEstado, :idMesa, :idMozo, :codigoPedido)");
+            $consulta->bindValue(':idEstado', 1, PDO::PARAM_INT);
+            $consulta->bindValue(':idMesa', $usr->obtenerIdMesa("mesas",":mesa",$usr->codigoMesa), PDO::PARAM_INT);
+            $consulta->bindValue(':idMozo', $usr->obtenerIdMozo(), PDO::PARAM_INT);
+            $consulta->bindValue(':codigoPedido', $usr->codigoPedido, PDO::PARAM_STR);
+            $consulta->execute();
+        }
+        
+        fclose($file);
+
+        return $objAccesoDatos->obtenerUltimoId();
+    }
+
+    public static function cargarPedidosACSV($filePath){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+
+        $stmt = $objAccesoDatos->prepararConsulta("SELECT pedidos.codigoPedido, mesas.codigoMesa, usuarios.usuario as mozo FROM pedidos JOIN mesas on mesas.id = pedidos.idMesa JOIN estadospedido on estadospedido.id = pedidos.idEstado JOIN usuarios on usuarios.id = pedidos.idMozo");
+        $stmt->execute();
+        $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $exportDir = dirname($filePath);
+        if (!is_dir($exportDir)) {
+            mkdir($exportDir, 0777, true);
+        }
+
+        $file = fopen($filePath, 'w');
+
+        fputcsv($file, ['codigoPedido', 'codigoMesa', 'mozo']);
+
+        foreach ($pedidos as $pedido) {
+            fputcsv($file, $pedido);
+        }
+
+        fclose($file);
+    }
 }
