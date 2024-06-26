@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-06-2024 a las 04:33:22
+-- Tiempo de generación: 26-06-2024 a las 19:54:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -118,7 +118,26 @@ CREATE TABLE `menu` (
 INSERT INTO `menu` (`id`, `nombre`, `precio`, `idSector`) VALUES
 (1, 'Agua', 1000, 0),
 (2, 'Milanesa', 3000, 3),
-(3, 'Cerveza', 3000, 2);
+(3, 'Cerveza', 3000, 2),
+(4, 'Pizza', 8901, 0),
+(5, 'Hamburguesa', 1530, 0),
+(6, 'Ensalada', 6923, 0),
+(7, 'Sushi', 3528, 0),
+(8, 'Taco', 7687, 0),
+(9, 'Vino', 9881, 0),
+(10, 'Refresco', 6669, 0),
+(11, 'Agua', 2303, 0),
+(12, 'Café', 4406, 0),
+(13, 'Té', 6495, 0),
+(14, 'Sandwich', 8100, 0),
+(15, 'Pastel', 4107, 0),
+(16, 'Helado', 3810, 0),
+(17, 'Galletas', 3610, 0),
+(18, 'Jugo de naranja', 9845, 0),
+(19, 'Batido', 3436, 0),
+(20, 'Frutas', 7378, 0),
+(21, 'Pasta', 3991, 0),
+(22, 'Sopa', 7171, 0);
 
 -- --------------------------------------------------------
 
@@ -140,7 +159,12 @@ INSERT INTO `mesas` (`id`, `idEstado`, `codigoMesa`) VALUES
 (2, '1', '451as'),
 (3, '1', '35f43'),
 (4, '1', '654ss'),
-(5, '1', '4s4da');
+(5, '1', '4s4da'),
+(6, '1', 'Z6E9v'),
+(7, '1', 'vP1PB'),
+(8, '1', 'fvwUc'),
+(9, '1', 'MTT47'),
+(10, '1', 'sAXtl');
 
 -- --------------------------------------------------------
 
@@ -166,7 +190,11 @@ INSERT INTO `pedidos` (`id`, `idMesa`, `idEstado`, `idMozo`, `codigoPedido`, `fe
 (2, 2, 5, 2, '342df', '0000-00-00'),
 (3, 4, 1, 2, 's5d4s', '0000-00-00'),
 (4, 4, 1, 2, '5d6sd', '0000-00-00'),
-(5, 4, 1, 2, 'sd5er', '0000-00-00');
+(5, 4, 1, 2, 'sd5er', '0000-00-00'),
+(6, 5, 1, 2, 'mR5Gg', '0000-00-00'),
+(7, 2, 1, 2, 'jhD7O', '0000-00-00'),
+(8, 2, 1, 11, 'uZ0fF', '0000-00-00'),
+(9, 3, 1, 11, 'zY5Me', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -356,19 +384,19 @@ ALTER TABLE `estadospedido`
 -- AUTO_INCREMENT de la tabla `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -392,7 +420,7 @@ ALTER TABLE `sectores`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

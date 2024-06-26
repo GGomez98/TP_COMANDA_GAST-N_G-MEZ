@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:666/usuarios/pedro",
+							"raw": "http://localhost:666/usuarios/jorge",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -42,7 +42,7 @@
 							"port": "666",
 							"path": [
 								"usuarios",
-								"pedro"
+								"jorge"
 							]
 						}
 					},
@@ -58,24 +58,18 @@
 							"formdata": [
 								{
 									"key": "usuario",
-									"value": "abel",
+									"value": "Marcos",
 									"type": "text"
 								},
 								{
 									"key": "clave",
-									"value": "54d5s",
+									"value": "asd8a8",
 									"type": "text"
 								},
 								{
 									"key": "perfil",
-									"value": "socio",
+									"value": "cocinero",
 									"type": "text"
-								},
-								{
-									"key": "sector",
-									"value": "patio",
-									"type": "text",
-									"disabled": true
 								}
 							]
 						},
@@ -88,6 +82,56 @@
 							"port": "666",
 							"path": [
 								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "15-Cargar Usuarios por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/usuarios.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/usuarios/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "16-Descargar CSV con usuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/usuarios/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios",
+								"descargarCSV"
 							]
 						}
 					},
@@ -108,12 +152,12 @@
 							"formdata": [
 								{
 									"key": "nombre",
-									"value": "Agua",
+									"value": "Cerveza",
 									"type": "text"
 								},
 								{
 									"key": "precio",
-									"value": "1000",
+									"value": "3000",
 									"type": "text"
 								}
 							]
@@ -170,6 +214,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "17-Cargar Productos por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/productos.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/productos/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18-Descargar CSV con usuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/productos/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos",
+								"descargarCSV"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -186,12 +280,7 @@
 							"formdata": [
 								{
 									"key": "codigoMesa",
-									"value": "35f43",
-									"type": "text"
-								},
-								{
-									"key": "sector",
-									"value": "cocina",
+									"value": "4s4da",
 									"type": "text"
 								}
 							]
@@ -235,6 +324,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "21-Cargar Mesas por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/mesas.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/mesas/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "22-Descargar Mesas por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/mesas/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas",
+								"descargarCSV"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -251,12 +390,12 @@
 							"formdata": [
 								{
 									"key": "codigoMesa",
-									"value": "451as",
+									"value": "654ss",
 									"type": "text"
 								},
 								{
 									"key": "codigoPedido",
-									"value": "342df",
+									"value": "sd5er",
 									"type": "text"
 								},
 								{
@@ -305,7 +444,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:666/pedidos/jorge",
+							"raw": "http://localhost:666/pedidos/342df",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -313,7 +452,7 @@
 							"port": "666",
 							"path": [
 								"pedidos",
-								"jorge"
+								"342df"
 							]
 						}
 					},
@@ -334,13 +473,13 @@
 								},
 								{
 									"key": "codigoPedido",
-									"value": "342df",
+									"value": "s5d4s",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:666/pedidos/agregarProducto",
+							"raw": "http://localhost:666/pedidos/agregarProducto?usuario=jorge",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -349,6 +488,12 @@
 							"path": [
 								"pedidos",
 								"agregarProducto"
+							],
+							"query": [
+								{
+									"key": "usuario",
+									"value": "jorge"
+								}
 							]
 						}
 					},
@@ -406,21 +551,11 @@
 									"key": "codigoPedido",
 									"value": "342df",
 									"type": "text"
-								},
-								{
-									"key": "usuario",
-									"value": "",
-									"type": "text"
-								},
-								{
-									"key": "clave",
-									"value": "",
-									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:666/pedidos/cancelarPedido",
+							"raw": "http://localhost:666/pedidos/cancelarPedido?usuario=pedro&clave=dasdqsdw2sd23",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -429,6 +564,66 @@
 							"path": [
 								"pedidos",
 								"cancelarPedido"
+							],
+							"query": [
+								{
+									"key": "usuario",
+									"value": "pedro"
+								},
+								{
+									"key": "clave",
+									"value": "dasdqsdw2sd23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "19-Cargar Pedidos por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/pedidos.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "20-Descargar Pedidos por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/pedidos/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"descargarCSV"
 							]
 						}
 					},
