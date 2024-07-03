@@ -58,7 +58,7 @@
 							"formdata": [
 								{
 									"key": "usuario",
-									"value": "Marcos",
+									"value": "Gastón",
 									"type": "text"
 								},
 								{
@@ -68,7 +68,7 @@
 								},
 								{
 									"key": "perfil",
-									"value": "cocinero",
+									"value": "admin",
 									"type": "text"
 								}
 							]
@@ -395,13 +395,18 @@
 								},
 								{
 									"key": "codigoPedido",
-									"value": "sd5er",
+									"value": "d4f5s",
 									"type": "text"
 								},
 								{
 									"key": "mozo",
-									"value": "pedro",
+									"value": "maria_gomez",
 									"type": "text"
+								},
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Descargas/mesa-buffet-loft-Table-2-1024x683.jpg"
 								}
 							]
 						},
@@ -444,7 +449,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:666/pedidos/342df",
+							"raw": "http://localhost:666/pedidos/384jj",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -452,7 +457,7 @@
 							"port": "666",
 							"path": [
 								"pedidos",
-								"342df"
+								"384jj"
 							]
 						}
 					},
@@ -461,6 +466,16 @@
 				{
 					"name": "12-Cargar productos al pedido",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTk5NzMyMjIsImRhdGEiOnsidXN1YXJpbyI6ImFuYV9tYXJ0aW5leiIsInJvbCI6ImJhcnRlbmRlciJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.VpUd4GWypf91iJXy7FBpViOA1TFYORGf55LpqumBVFI",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -468,18 +483,18 @@
 							"formdata": [
 								{
 									"key": "producto",
-									"value": "milanesa",
+									"value": "Agua",
 									"type": "text"
 								},
 								{
 									"key": "codigoPedido",
-									"value": "s5d4s",
+									"value": "mR5Gg",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:666/pedidos/agregarProducto?usuario=jorge",
+							"raw": "http://localhost:666/pedidos/agregarProducto",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -488,12 +503,6 @@
 							"path": [
 								"pedidos",
 								"agregarProducto"
-							],
-							"query": [
-								{
-									"key": "usuario",
-									"value": "jorge"
-								}
 							]
 						}
 					},
@@ -630,6 +639,40 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "23-Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "usuario",
+							"value": "ana_martinez",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "mysecret",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
