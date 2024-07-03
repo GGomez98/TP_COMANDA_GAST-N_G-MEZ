@@ -43,7 +43,8 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
           ->add(\DatosMiddleware::class . ":cargarUserMW");
     $group->post('/cargarCSV',\UsuarioController::class . ':CargarUsuariosDesdeCSVController');
     $group->post('/descargarCSV',\UsuarioController::class . ':GuardarUsuariosEnCSV');
-  });
+  })
+    ->add(new RolMiddleware("Socio"));
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \ProductoController::class . ':TraerTodos');
