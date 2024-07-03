@@ -5,6 +5,7 @@ class Producto
     public $id;
     public $nombre;
     public $precio;
+    public $estado;
 
     public function crearProducto()
     {

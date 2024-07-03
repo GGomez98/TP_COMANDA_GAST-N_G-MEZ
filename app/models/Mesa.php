@@ -4,9 +4,7 @@
 class Mesa{
     public $id;
     public $estado;
-    public $pedido;
     public $codigoMesa;
-    public $calificaciones;
 
     private function obtenerId($table, $param, $atributte){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -88,5 +86,16 @@ class Mesa{
         }
 
         fclose($file);
+    }
+
+    public function modificarMesa()
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE mesas SET idEstado = :idEstado WHERE codigoMesa = :codigoMesa");
+
+        $consulta->bindValue(':codigoMesa', $this->codigoMesa, PDO::PARAM_STR);
+        $consulta->bindValue(':idEstado', $this->estado, PDO::PARAM_INT);
+
+        $consulta->execute();
     }
 }

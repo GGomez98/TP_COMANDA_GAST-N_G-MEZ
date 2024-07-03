@@ -15,7 +15,6 @@ class DatosMiddleware{
             // SI NO ENTRO AL VERBO, QUIERO UNA NUEVA RESPONSE.
             $response = new Response();
             $response->getBody()->write(json_encode(array("error" => "Faltan parametros")));
-            return $response;
         }
 
         return $response;

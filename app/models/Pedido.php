@@ -1,5 +1,5 @@
 <?php
-
+require_once './models/Mesa.php';
 class Pedido{
     public $id;
     public $productos;
@@ -28,7 +28,7 @@ class Pedido{
         $stmt->execute([":usuario" => $this->mozo]);
         return $stmt->fetchColumn();
     }
-    public function crearPedido()
+    public function crearPedido($imagen, $extension)
     {
         $this->estado = "Realizado";
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -38,6 +38,13 @@ class Pedido{
         $consulta->bindValue(':idMozo', $this->obtenerIdMozo(), PDO::PARAM_INT);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->execute();
+
+        $mesa = new Mesa();
+        $mesa->codigoMesa = $this->codigoMesa;
+        $mesa->estado = 2;
+        $mesa->modificarMesa();
+
+        Pedido::GuardarFoto($imagen, $this->codigoPedido, $this->codigoMesa, $extension);
 
         return $objAccesoDatos->obtenerUltimoId();
     }
@@ -63,9 +70,10 @@ class Pedido{
 
     public function agregarProducto($producto){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productospedidos (idProducto, idPedido) VALUES (:idProducto, :idPedido)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productospedidos (idProducto, idPedido, idEstado) VALUES (:idProducto, :idPedido, :idEstado)");
         $consulta->bindValue(":idProducto", Producto::obtenerProducto($producto)->id, PDO::PARAM_INT);
         $consulta->bindValue(':idPedido', $this::obtenerPedido($this->codigoPedido)->id, PDO::PARAM_INT);
+        $consulta->bindValue(':idEstado', 1, PDO::PARAM_INT);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -73,7 +81,7 @@ class Pedido{
 
     public function obtenerProductosDelPedido(){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, menu.precio FROM menu JOIN productospedidos on menu.id = productospedidos.idProducto WHERE productospedidos.idPedido = :idPedido;");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, menu.precio, estadospedido.nombre as estado FROM menu JOIN productospedidos on menu.id = productospedidos.idProducto JOIN estadospedido on estadospedido.id = productospedidos.idEstado WHERE productospedidos.idPedido = :idPedido;");
         $consulta->bindValue(':idPedido', $this::obtenerPedido($this->codigoPedido)->id, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -180,5 +188,17 @@ class Pedido{
         }
 
         fclose($file);
+    }
+
+    public static function GuardarFoto($foto, $idPedido, $idMesa, $tipo_archivo)
+    {
+        $carpeta_archivos = 'ImagenesPedidos/';
+        $destino = $carpeta_archivos . $idPedido . "-" . $idMesa . "." . $tipo_archivo;
+
+        if (move_uploaded_file($foto['tmp_name'], $destino)) {
+            echo "La imagen fue guardada exitosamente.\n\n";
+        } else {
+            echo "La foto no pudo ser guardada.\n\n";
+        }
     }
 }

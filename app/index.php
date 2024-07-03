@@ -13,12 +13,12 @@ use Slim\Routing\RouteContext;
 require __DIR__ . '/../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
-// require_once './middlewares/Logger.php';
 
 require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
+require_once './controllers/AutentificadorJWTController.php';
 require_once './middlewares/DatosMiddleware.php';
 require_once './middlewares/RolMiddleware.php';
 
@@ -68,10 +68,8 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('[/]', \PedidoController::class . ':CargarUno')
         ->add(\DatosMiddleware::class . ":cargarPedidoMW");
   $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd')
-      ->add(new RolMiddleware("Mozo"))
-      ->add(\DatosMiddleware::class . ":agregarProductoAPedidoMW");
-  $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController')
-        ->add(\RolMiddleware::class . ":cambiarEstadoPedidoMW")      
+        ->add(new RolMiddleware("Mozo"));
+  $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController')      
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
   $group->post('/cancelarPedido', \PedidoController::class . ':CancelarPedidoController')
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
@@ -86,6 +84,10 @@ $app->get('[/]', function (Request $request, Response $response) {
     
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->group('/auth', function (RouteCollectorProxy $group) {
+      $group->post('[/]',\AutentificadorJWTController::class . ":LoginUsuario" );
 });
 
 $app->run();

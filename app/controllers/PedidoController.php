@@ -11,13 +11,26 @@ class PedidoController extends Pedido implements IApiUsable
         $codigoPedido = $parametros['codigoPedido'];
         $codigoMesa = $parametros['codigoMesa'];
         $mozo = $parametros['mozo'];
+        $tipo_archivo = $_FILES['foto']['type'];
+        $tamano_archivo = $_FILES['foto']['size'];
+        $extension = "";
+
+        if ((strpos($tipo_archivo, "png") || strpos($tipo_archivo, "jpeg")) && ($tamano_archivo < 300000)) {
+
+          $extension = substr($tipo_archivo, strpos($tipo_archivo, '/') + 1);
+
+      } else {
+          $payload = json_encode(array("mensaje" => "La imagen no tiene un formato o tamaño que sean admitidos."));
+          $response->getBody()->write($payload);
+          return $response->withHeader('Content-Type', 'application/json');
+      }
 
         // Creamos el Pedido
         $ped = new Pedido();
         $ped->codigoPedido = $codigoPedido;
         $ped->codigoMesa = $codigoMesa;
         $ped->mozo = $mozo;
-        $ped->crearPedido();
+        $ped->crearPedido($_FILES['foto'],$extension);
 
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
 
