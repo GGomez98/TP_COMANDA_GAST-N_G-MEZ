@@ -7,6 +7,9 @@ class Producto
     public $precio;
     public $estado;
     public $sector;
+    public $codigoPedido;
+    public $tiempoPreparacion;
+    public $usuarioPreparacion;
 
     public function crearProducto()
     {

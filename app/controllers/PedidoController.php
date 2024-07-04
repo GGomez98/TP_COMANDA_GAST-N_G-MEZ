@@ -160,4 +160,32 @@ class PedidoController extends Pedido implements IApiUsable
       return $response->withHeader('Content-Type', 'application/csv')
                     ->withHeader('Content-Disposition', 'attachment; filename="pedidos.csv"');
     }
+
+    public function ListarPedidosSector($request, $response, $args){
+      $uri = $request->getUri();
+      $path = $uri->getPath();
+      $sector = str_replace("/sectores/", "", $path);
+      switch ($sector) {
+          case "cocina":
+              $sectorAListar = 3;
+              break;
+          case "candybar":
+              $sectorAListar = 4;
+              break;
+          case "patio":
+              $sectorAListar = 2;
+              break;
+          case "barra":
+              $sectorAListar = 1;
+              break;
+          default:
+              $sectorAListar = 3;
+              break;
+      }
+      $lista = Pedido::listarPorductosEnPedidoPorSector($sectorAListar);
+      $payload = json_encode(array("listaPendientes" => $lista));
+
+      $response->getBody()->write($payload);
+      return $response->withHeader('Content-Type', 'application/json');
+    }
 }

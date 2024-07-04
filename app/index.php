@@ -87,6 +87,21 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
 });
 
+$app->group('/sectores', function (RouteCollectorProxy $group) {
+  $group->get('/cocina', \PedidoController::class . ':ListarPedidosSector');
+    #->add(new RolesMiddleware([1, 4])) //Roles: 1 - Socio / 4 - Cocinero
+    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
+  $group->get('/candybar', \PedidoController::class . ':ListarPedidosSector');
+    #->add(new RolesMiddleware([1, 6])) //Roles: 1 - Socio / 6 - Pastelero
+    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
+  $group->get('/patio', \PedidoController::class . ':ListarPedidosSector');
+    #->add(new RolesMiddleware([1, 3])) //Roles: 1 - Socio / 3 - Cervecero
+    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
+  $group->get('/barra', \PedidoController::class . ':ListarPedidosSector');
+    #->add(new RolesMiddleware([1, 2])) //Roles: 1 - Socio / 2 - Bartender
+    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
+});
+
 
 
 $app->get('[/]', function (Request $request, Response $response) {    

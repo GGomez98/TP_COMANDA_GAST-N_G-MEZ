@@ -7,7 +7,6 @@ class Pedido{
     public $estado;
     public $codigoMesa;
     public $codigoPedido;
-    public $tiempoRestante;
 
     private function obtenerId($table, $param, $atributte){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -70,7 +69,7 @@ class Pedido{
 
     public function agregarProducto($producto){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productospedidos (idProducto, idPedido, idEstado) VALUES (:idProducto, :idPedido, :idEstado)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productospedidos (idProducto, idPedido, idEstado, idUsuarioPreparacion) VALUES (:idProducto, :idPedido, :idEstado, 72)");
         $consulta->bindValue(":idProducto", $producto, PDO::PARAM_INT);
         $consulta->bindValue(':idPedido', $this::obtenerPedido($this->codigoPedido)->id, PDO::PARAM_INT);
         $consulta->bindValue(':idEstado', 1, PDO::PARAM_INT);
@@ -202,13 +201,11 @@ class Pedido{
         }
     }
 
-    public static function listarPorductosEnPedidoPorSector(){
+    public static function listarPorductosEnPedidoPorSector($sector){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, menu.precio, estadospedido.nombre as estado, sectores.nombre as sector FROM menu JOIN productospedidos on menu.id = productospedidos.idProducto JOIN estadospedido on estadospedido.id = productospedidos.idEstado JOIN sectores on sectores.id = menu.idSector WHERE productospedidos.idPedido = :idPedido;");
-        $consulta->bindValue(':idPedido', $this::obtenerPedido($this->codigoPedido)->id, PDO::PARAM_INT);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id as id, menu.nombre as nombre, pedidos.codigoPedido as codigoPedido, estadospedido.nombre as estado, usuarios.usuario as usuarioPreparacion, productospedidos.tiempoPreparacion, sectores.nombre as sector, menu.precio as precio FROM productospedidos JOIN menu ON productospedidos.idProducto = menu.id JOIN sectores ON menu.idSector = sectores.id JOIN pedidos on productospedidos.idPedido = pedidos.id JOIN estadospedido ON productospedidos.idEstado = estadospedido.id JOIN usuarios ON productospedidos.idUsuarioPreparacion = usuarios.id WHERE sectores.id = :idSector");
+        $consulta->bindValue(':idSector', $sector, PDO::PARAM_INT);
         $consulta->execute();
-
-        #SELECT menu.nombre as nombre, pedidos.codigoPedido as codigoPedido, estadospedido.nombre as estado, usuarios.usuario as usuarioPreparacion, productospedidos.tiempoPreparacion FROM productospedidos JOIN menu ON productospedidos.idProducto = menu.id JOIN sectores ON menu.idSector = sectores.id JOIN pedidos on productospedidos.idPedido = pedidos.id JOIN estadospedido ON productospedidos.idEstado = estadospedido.id JOIN usuarios ON productospedidos.idUsuarioPreparacion = usuarios.id WHERE sectores.id = 3;
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
     }
