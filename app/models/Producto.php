@@ -6,13 +6,15 @@ class Producto
     public $nombre;
     public $precio;
     public $estado;
+    public $sector;
 
     public function crearProducto()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO menu (nombre, precio) VALUES (:nombre, :precio)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO menu (nombre, precio, idSector) VALUES (:nombre, :precio, :idSector)");
         $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
         $consulta->bindValue(':precio', $this->precio);
+        $consulta->bindValue(':idSector', $this->sector, PDO::PARAM_INT);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -21,7 +23,7 @@ class Producto
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, precio FROM menu");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, precio, sectores.nombre as sector FROM menu JOIN sectores on sectores.id = menu.idSector;");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
@@ -66,14 +68,17 @@ class Producto
 
             $nombre = $data[0];
             $precio = $data[1];
+            $sector = $data[2];
 
             $usr = new Producto();
             $usr->nombre = $nombre;
             $usr->precio = $precio;
+            $usr->sector = $sector;
 
-            $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO menu (nombre, precio) VALUES (:nombre, :precio)");
+            $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO menu (nombre, precio, idSector) VALUES (:nombre, :precio, :idSector)");
             $consulta->bindValue(':nombre', $usr->nombre, PDO::PARAM_STR);
             $consulta->bindValue(':precio', $usr->precio);
+            $consulta->bindValue(':idSector', $usr->sector, PDO::PARAM_INT);
             $consulta->execute();
         }
         

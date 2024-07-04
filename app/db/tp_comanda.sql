@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-07-2024 a las 04:23:57
+-- Tiempo de generación: 04-07-2024 a las 07:07:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -73,6 +73,10 @@ INSERT INTO `estadosmesa` (`id`, `nombre`) VALUES
 (1, 'cerrada'),
 (2, 'cliente esperando pedido'),
 (3, 'cliente comiendo'),
+(4, 'cliente pagando'),
+(1, 'cerrada'),
+(2, 'cliente esperando pedido'),
+(3, 'cliente comiendo'),
 (4, 'cliente pagando');
 
 -- --------------------------------------------------------
@@ -116,28 +120,28 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `nombre`, `precio`, `idSector`) VALUES
-(1, 'Agua', 1000, 0),
 (2, 'Milanesa', 3000, 3),
 (3, 'Cerveza', 3000, 2),
-(23, 'Pizza', 8901, 0),
-(24, 'Hamburguesa', 1530, 0),
-(25, 'Ensalada', 6923, 0),
-(26, 'Sushi', 3528, 0),
-(27, 'Taco', 7687, 0),
-(28, 'Vino', 9881, 0),
-(29, 'Refresco', 6669, 0),
-(30, 'Agua', 2303, 0),
-(31, 'Café', 4406, 0),
-(32, 'Té', 6495, 0),
-(33, 'Sandwich', 8100, 0),
-(34, 'Pastel', 4107, 0),
-(35, 'Helado', 3810, 0),
-(36, 'Galletas', 3610, 0),
-(37, 'Jugo de naranja', 9845, 0),
-(38, 'Batido', 3436, 0),
-(39, 'Frutas', 7378, 0),
-(40, 'Pasta', 3991, 0),
-(41, 'Sopa', 7171, 0);
+(42, 'Pizza', 8901, 3),
+(43, 'Hamburguesa', 1530, 3),
+(44, 'Ensalada', 6923, 3),
+(45, 'Sushi', 3528, 3),
+(46, 'Taco', 7687, 3),
+(47, 'Vino', 9881, 1),
+(48, 'Refresco', 6669, 1),
+(49, 'Agua', 2303, 1),
+(50, 'Café', 4406, 4),
+(51, 'Té', 6495, 4),
+(52, 'Sandwich', 8100, 3),
+(53, 'Pastel', 4107, 4),
+(54, 'Helado', 3810, 4),
+(55, 'Galletas', 3610, 4),
+(56, 'Jugo de naranja', 9845, 3),
+(57, 'Batido', 3436, 4),
+(58, 'Frutas', 7378, 4),
+(59, 'Pasta', 3991, 3),
+(60, 'Sopa', 7171, 3),
+(61, 'Negroni', 3000, 2);
 
 -- --------------------------------------------------------
 
@@ -400,21 +404,22 @@ CREATE TABLE `productospedidos` (
   `id` int(11) NOT NULL,
   `idProducto` int(11) NOT NULL,
   `idPedido` int(11) NOT NULL,
-  `idEstado` int(11) NOT NULL
+  `idEstado` int(11) NOT NULL,
+  `idUsuarioPreparacion` int(11) NOT NULL,
+  `tiempoPreparacion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `productospedidos`
 --
 
-INSERT INTO `productospedidos` (`id`, `idProducto`, `idPedido`, `idEstado`) VALUES
-(17, 1, 207, 1),
-(18, 1, 207, 1),
-(19, 1, 207, 1),
-(20, 1, 207, 1),
-(21, 1, 207, 1),
-(22, 1, 207, 1),
-(23, 1, 207, 1);
+INSERT INTO `productospedidos` (`id`, `idProducto`, `idPedido`, `idEstado`, `idUsuarioPreparacion`, `tiempoPreparacion`) VALUES
+(25, 2, 207, 1, 64, 0),
+(26, 42, 207, 1, 65, 0),
+(27, 43, 207, 1, 64, 0),
+(28, 44, 207, 1, 0, 0),
+(29, 45, 207, 1, 0, 0),
+(30, 46, 207, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -462,7 +467,8 @@ INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `idPerfil`, `fechaBaja`) VALUE
 (67, 'ana_martinez', '$2y$10$AzefSN7h3Q/N0h9YfrcrdukvyRM4IoC23pJlRtxTumj08.p2v4NHW', 4, NULL),
 (68, 'luis_garcia', '$2y$10$NQVKCgtuB91D0e.83BdTkOoPnZUKKmIgi81Pcrb10RbEn55tK0D66', 2, NULL),
 (69, 'Marcos', '$2y$10$.neNMIhTavT3iQRa8A/xO.x3WgUECrMNtHE.LNhEyIHTA8wdX/r9e', 7, NULL),
-(70, 'Gastón', '$2y$10$lMaDQ.YcUUj7bt30AUZW0eWXUgIOG/XXTz2T9YK59clfsj7VG83bC', 7, NULL);
+(70, 'Gastón', '$2y$10$lMaDQ.YcUUj7bt30AUZW0eWXUgIOG/XXTz2T9YK59clfsj7VG83bC', 7, NULL),
+(71, 'luis_perez', '$2y$10$2SOUxjEKZQS87iUBmAhkEuZhKPcYqT6O1cGnQi.2qPI6xc/FOaCru', 5, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -554,7 +560,7 @@ ALTER TABLE `estadospedido`
 -- AUTO_INCREMENT de la tabla `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT de la tabla `mesas`
@@ -578,7 +584,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `productospedidos`
 --
 ALTER TABLE `productospedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `sectores`
@@ -590,7 +596,7 @@ ALTER TABLE `sectores`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

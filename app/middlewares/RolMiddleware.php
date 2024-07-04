@@ -8,7 +8,7 @@ require_once './utils/AutentificadorJWT.php';
 
 class RolMiddleware
 {
-    private $rol = "";
+    private $rol = array();
 
     public function __construct($rol)
     {
@@ -21,11 +21,11 @@ class RolMiddleware
         $token = trim(explode("Bearer", $header)[1]);
         $data = AutentificadorJWT::ObtenerData($token);
         
-        if ($data->rol === $this->rol) {
+        if (in_array($data->rol, $this->rol)) {
             $response = $handler->handle($request);
         } else {
             $response = new Response();
-            $response->getBody()->write(json_encode(array("error" => "No es " . $this->rol)));
+            $response->getBody()->write(json_encode(array("error" => "No es un usuario autorizado")));
             return $response;
         }
 

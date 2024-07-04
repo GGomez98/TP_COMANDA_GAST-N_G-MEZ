@@ -21,6 +21,7 @@ require_once './controllers/PedidoController.php';
 require_once './controllers/AutentificadorJWTController.php';
 require_once './middlewares/DatosMiddleware.php';
 require_once './middlewares/RolMiddleware.php';
+require_once './middlewares/AuthMiddleware.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -44,7 +45,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->post('/cargarCSV',\UsuarioController::class . ':CargarUsuariosDesdeCSVController');
     $group->post('/descargarCSV',\UsuarioController::class . ':GuardarUsuariosEnCSV');
   })
-    ->add(new RolMiddleware("Socio"));
+    ->add(new RolMiddleware(["Socio"]));
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->get('[/]', \ProductoController::class . ':TraerTodos');
@@ -56,8 +57,12 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \MesaController::class . ':TraerTodos');
+  $group->get('[/]', \MesaController::class . ':TraerTodos')
+        ->add(new RolMiddleware(["Socio", "Mozo"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");
   $group->post('[/]', \MesaController::class . ':CargarUno')
+        ->add(new RolMiddleware(["Socio"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW")
         ->add(\DatosMiddleware::class . ":cargarMesaMW");
   $group->post('/cargarCSV',\MesaController::class . ':CargarMesasDesdeCSVController');
   $group->post('/descargarCSV',\MesaController::class . ':GuardarMesasEnCSV');
@@ -67,12 +72,16 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')
+        ->add(new RolMiddleware(["Mozo"]))  
+        ->add(\AuthMiddleware::class . ":verificarLoginMW")
         ->add(\DatosMiddleware::class . ":cargarPedidoMW");
   $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd')
-        ->add(new RolMiddleware("Mozo"));
+        ->add(new RolMiddleware(["Mozo"]));
   $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController')      
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
   $group->post('/cancelarPedido', \PedidoController::class . ':CancelarPedidoController')
+        ->add(new RolMiddleware(["Mozo"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW")      
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
   $group->post('/cargarCSV',\PedidoController::class . ':CargarProductosDesdeCSVController');
   $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
