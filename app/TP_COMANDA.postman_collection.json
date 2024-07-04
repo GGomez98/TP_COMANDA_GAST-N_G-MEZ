@@ -1,0 +1,806 @@
+{
+	"info": {
+		"_postman_id": "bb2a5a38-f64c-4c27-b73a-194691577ead",
+		"name": "TP_COMANDA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27785480"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "01-Obtener todos los usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNTY5MTksImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.Vf-l6YuaEKhSU0rkWYeVgfxfjmXvLwYU7gPI1vYeiuM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02-Obtener usuario especifico",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTk5NzM5NzMsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.TRNLqUQuiIuMXzkMc1aHpulc7dXVH2K_u67hjvdXFGA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/usuarios/maria_gomez",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios",
+								"maria_gomez"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03-Cargar Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNTY5MTksImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.Vf-l6YuaEKhSU0rkWYeVgfxfjmXvLwYU7gPI1vYeiuM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "luis_perez",
+									"type": "text"
+								},
+								{
+									"key": "clave",
+									"value": "asd8a8",
+									"type": "text"
+								},
+								{
+									"key": "perfil",
+									"value": "cervecero",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "15-Cargar Usuarios por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/usuarios.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/usuarios/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "16-Descargar CSV con usuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/usuarios/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"usuarios",
+								"descargarCSV"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Productos",
+			"item": [
+				{
+					"name": "04-Cargar Producto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Negroni",
+									"type": "text"
+								},
+								{
+									"key": "precio",
+									"value": "3000",
+									"type": "text"
+								},
+								{
+									"key": "sector",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05-Obtener todos los productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11-Obtener un producto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/productos/agua",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos",
+								"agua"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "17-Cargar Productos por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/productos.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/productos/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18-Descargar CSV con usuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/productos/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"productos",
+								"descargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "25-Iniciar Preparacion",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"producto\": 25,\r\n            \"tiempoPreparacion\": 20,\r\n            \"usuarioPreparacion\": 68\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/iniciarPreparacion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"iniciarPreparacion"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mesas",
+			"item": [
+				{
+					"name": "06-Cargar Mesa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigoMesa",
+									"value": "4s4da",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/mesas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07-Obtener todas las mesas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/mesas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "21-Cargar Mesas por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/mesas.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/mesas/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "22-Descargar Mesas por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/mesas/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas",
+								"descargarCSV"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "08-Cargar Pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigoMesa",
+									"value": "654ss",
+									"type": "text"
+								},
+								{
+									"key": "codigoPedido",
+									"value": "d4f5s",
+									"type": "text"
+								},
+								{
+									"key": "mozo",
+									"value": "maria_gomez",
+									"type": "text"
+								},
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Descargas/mesa-buffet-loft-Table-2-1024x683.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09-Obtener todos los pedidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10-Obtener un Pedido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/pedidos/384jj",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"384jj"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12-Cargar productos al pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNjAwMTUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.MUFwwQqgB1vMKPggbaBaXd3xVDF4gt8MT8kURWgm3vc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "producto",
+									"value": "52",
+									"type": "text"
+								},
+								{
+									"key": "codigoPedido",
+									"value": "mR5Gg",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/agregarProducto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"agregarProducto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13-Tomar Orden",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxMDg3NDUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.H9T0PsabgS5GfSjKj1sh7tiyJy6-1M2VU7oYvTtDQsQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigoPedido",
+									"value": "mR5Gg",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/tomarOrden",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"tomarOrden"
+							],
+							"query": [
+								{
+									"key": "usuario",
+									"value": "pedro",
+									"disabled": true
+								},
+								{
+									"key": "clave",
+									"value": "dasdqsdw2sd23",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14-Cancelar pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigoPedido",
+									"value": "342df",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/cancelarPedido?usuario=pedro&clave=dasdqsdw2sd23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"cancelarPedido"
+							],
+							"query": [
+								{
+									"key": "usuario",
+									"value": "pedro"
+								},
+								{
+									"key": "clave",
+									"value": "dasdqsdw2sd23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "19-Cargar Pedidos por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "csv",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/TP_COMANDA_GASTÓN_GÓMEZ/app/CSVs_Leidos/pedidos.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/cargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"cargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "20-Descargar Pedidos por CSV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/pedidos/descargarCSV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"descargarCSV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "24-Obtener productos pedidos por sector",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxMjEzMTksImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.eX4Q91yCWEBk9wjsWjbwzWcOhDB48eOJ62A0k7UBdNI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/sectores/cocina",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"sectores",
+								"cocina"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "23-Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "usuario",
+							"value": "juan_perez",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "clave123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
