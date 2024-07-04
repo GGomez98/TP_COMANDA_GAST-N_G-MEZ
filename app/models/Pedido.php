@@ -87,35 +87,21 @@ class Pedido{
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
     }
 
-    public function cambiarEstadoPedido(){
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        switch($this->estado){
-            case 'realizado':
-                $this->estado = 'Listo para preparar';
-                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 2 WHERE codigoPedido = :codigoPedido");
-                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
-                $consulta->execute();
-            break;
-            case 'listo para preparar':
-                $this->estado = 'En preparacion';
-                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 3 WHERE codigoPedido = :codigoPedido");
-                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
-                $consulta->execute();
-            break;
-            case 'en preparacion':
-                $this->estado = 'Listo para servir';
-                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 4 WHERE codigoPedido = :codigoPedido");
-                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
-                $consulta->execute();
-            break;
-            case 'listo para servir':
-                $this->estado = 'Entregado';
-                $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 5 WHERE codigoPedido = :codigoPedido");
-                $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
-                $consulta->execute();
-            break;
-            default:
-                return false;
+    public function TomarOrden(){
+        if($this->estado == 'realizado'){
+            $objAccesoDatos = AccesoDatos::obtenerInstancia();
+            $this->estado = 'Listo para preparar';
+            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET idEstado = 2 WHERE codigoPedido = :codigoPedido");
+            $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+            $consulta->execute();
+            $consulta->execute();
+            $consulta = $objAccesoDatos->prepararConsulta("UPDATE productospedidos SET idEstado = 2 WHERE idPedido = :idPedido;");
+            $consulta->bindValue(':idPedido', $this::obtenerPedido($this->codigoPedido)->id, PDO::PARAM_INT);
+            $consulta->execute();
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -203,10 +189,19 @@ class Pedido{
 
     public static function listarPorductosEnPedidoPorSector($sector){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id as id, menu.nombre as nombre, pedidos.codigoPedido as codigoPedido, estadospedido.nombre as estado, usuarios.usuario as usuarioPreparacion, productospedidos.tiempoPreparacion, sectores.nombre as sector, menu.precio as precio FROM productospedidos JOIN menu ON productospedidos.idProducto = menu.id JOIN sectores ON menu.idSector = sectores.id JOIN pedidos on productospedidos.idPedido = pedidos.id JOIN estadospedido ON productospedidos.idEstado = estadospedido.id JOIN usuarios ON productospedidos.idUsuarioPreparacion = usuarios.id WHERE sectores.id = :idSector");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id as id, menu.nombre as nombre, pedidos.codigoPedido as codigoPedido, estadospedido.nombre as estado, usuarios.usuario as usuarioPreparacion, productospedidos.tiempoPreparacion, sectores.nombre as sector, menu.precio as precio FROM productospedidos JOIN menu ON productospedidos.idProducto = menu.id JOIN sectores ON menu.idSector = sectores.id JOIN pedidos on productospedidos.idPedido = pedidos.id JOIN estadospedido ON productospedidos.idEstado = estadospedido.id JOIN usuarios ON productospedidos.idUsuarioPreparacion = usuarios.id WHERE sectores.id = :idSector AND estadospedido.id=2");
         $consulta->bindValue(':idSector', $sector, PDO::PARAM_INT);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
+    }
+
+    public static function IniciarPreparacion($idProducto, $idUsuario, $tiempo){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE productospedidos SET productospedidos.idEstado = 3, productospedidos.idUsuarioPreparacion=:idUsuarioPreparacion, productospedidos.tiempoPreparacion =:tiempoPreparacion  WHERE productospedidos.id = :idPedido;");
+        $consulta->bindValue(':idPedido', $idProducto, PDO::PARAM_INT);
+        $consulta->bindValue(':idUsuarioPreparacion', $idUsuario, PDO::PARAM_INT);
+        $consulta->bindValue(':tiempoPreparacion', $tiempo, PDO::PARAM_INT);
+        $consulta->execute();
     }
 }

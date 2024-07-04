@@ -94,19 +94,17 @@ class PedidoController extends Pedido implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 
-    public function CambiarEstadoPedidoController($request, $response, $args){
+    public function TomarOrdenController($request, $response, $args){
       $parametros = $request->getParsedBody();
 
       $codigoPedido = $parametros['codigoPedido'];
 
       $ped = Pedido::obtenerPedido($codigoPedido);
-
-      if($ped->estado === 'entregado' || $ped->estado === 'cancelado'){
-        $payload = json_encode(array("mensaje" => "El pedido ya fue entregado o cancelado y no se puede modificar su estado"));
+      if($ped->TomarOrden()){
+        $payload = json_encode(array("mensaje" => "Se cambio el estado del pedido"));
       }
       else{
-        $ped->cambiarEstadoPedido();
-        $payload = json_encode(array("mensaje" => "Se cambio el estado del pedido"));
+        $payload = json_encode(array("mensaje" => "Esta orden ya se tomo y esta lista para preparar"));
       }
 
         $response->getBody()->write($payload);
@@ -187,5 +185,22 @@ class PedidoController extends Pedido implements IApiUsable
 
       $response->getBody()->write($payload);
       return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function IniciarPreparacionController($request, $response, $args){
+      echo "Iniciar Preparacion\n";
+      $parametros = $request->getParsedBody();
+
+      $idProducto = $parametros['producto'];
+      $idUsuario = $parametros['usuarioPreparacion'];
+      $tiempo = $parametros['tiempoPreparacion'];
+
+      Pedido::IniciarPreparacion($idProducto, $idUsuario, $tiempo);
+
+      $payload = json_encode(array("mensaje" => "La preparacion se inicio con exito"));
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
     }
 }

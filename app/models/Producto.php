@@ -42,11 +42,20 @@ class Producto
         return $consulta->fetchObject('Pedido');
     }
 
-    public static function obtenerProducto($producto)
+    public static function obtenerProducto($idProducto)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, menu.precio FROM menu WHERE nombre = :nombre;");
-        $consulta->bindValue(':nombre', $producto, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, menu.precio FROM menu WHERE id = :id;");
+        $consulta->bindValue(':id', $idProducto, PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $consulta->fetchObject('Producto');
+    }
+
+    public static function obtenerProductoEnPedido($idProducto){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id, productospedidos.idProducto, productospedidos.idEstado, productospedidos.idUsuarioPreparacion, productospedidos.tiempoPreparacion FROM productospedidos WHERE id = :id;");
+        $consulta->bindValue(':id', $idProducto, PDO::PARAM_INT);
         $consulta->execute();
 
         return $consulta->fetchObject('Producto');

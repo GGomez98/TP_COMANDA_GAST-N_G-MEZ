@@ -77,29 +77,30 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
         ->add(\DatosMiddleware::class . ":cargarPedidoMW");
   $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd')
         ->add(new RolMiddleware(["Mozo"]));
-  $group->post('/cambiarEstado', \PedidoController::class . ':CambiarEstadoPedidoController')      
-        ->add(\DatosMiddleware::class . ":accionPedidoMW");
+  $group->post('/tomarOrden', \PedidoController::class . ':TomarOrdenController')
+        ->add(new RolMiddleware(["Mozo"]));
   $group->post('/cancelarPedido', \PedidoController::class . ':CancelarPedidoController')
         ->add(new RolMiddleware(["Mozo"]))
         ->add(\AuthMiddleware::class . ":verificarLoginMW")      
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
   $group->post('/cargarCSV',\PedidoController::class . ':CargarProductosDesdeCSVController');
   $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
+  $group->put('/iniciarPreparacion',\PedidoController::class . ':IniciarPreparacionController');
 });
 
 $app->group('/sectores', function (RouteCollectorProxy $group) {
-  $group->get('/cocina', \PedidoController::class . ':ListarPedidosSector');
-    #->add(new RolesMiddleware([1, 4])) //Roles: 1 - Socio / 4 - Cocinero
-    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
-  $group->get('/candybar', \PedidoController::class . ':ListarPedidosSector');
-    #->add(new RolesMiddleware([1, 6])) //Roles: 1 - Socio / 6 - Pastelero
-    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
-  $group->get('/patio', \PedidoController::class . ':ListarPedidosSector');
-    #->add(new RolesMiddleware([1, 3])) //Roles: 1 - Socio / 3 - Cervecero
-    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
-  $group->get('/barra', \PedidoController::class . ':ListarPedidosSector');
-    #->add(new RolesMiddleware([1, 2])) //Roles: 1 - Socio / 2 - Bartender
-    #->add(\ParametrosMiddleware::class . ':bearerTokenMW');
+  $group->get('/cocina', \PedidoController::class . ':ListarPedidosSector')
+        ->add(new RolMiddleware(["Socio", "cocinero"]))
+        ->add(\AuthMiddleware::class . ':verificarLoginMW');
+  $group->get('/candybar', \PedidoController::class . ':ListarPedidosSector')
+        ->add(new RolMiddleware(["Socio", "repostero"]))
+        ->add(\AuthMiddleware::class . ':verificarLoginMW');
+  $group->get('/patio', \PedidoController::class . ':ListarPedidosSector')
+        ->add(new RolMiddleware(["Socio", "cervecero"]))
+        ->add(\AuthMiddleware::class . ':verificarLoginMW');
+  $group->get('/barra', \PedidoController::class . ':ListarPedidosSector')
+        ->add(new RolMiddleware(["Socio", "bartender"]))
+        ->add(\AuthMiddleware::class . ':verificarLoginMW');
 });
 
 
