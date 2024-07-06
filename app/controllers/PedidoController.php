@@ -45,6 +45,11 @@ class PedidoController extends Pedido implements IApiUsable
       $ped = $args['codigoPedido'];
       $pedido = Pedido::obtenerPedido($ped);
       $pedido->productos = $pedido->obtenerProductosDelPedido();
+      foreach($pedido->productos as $producto){
+        if($producto->tiempoPreparacion == 0){
+          $producto->tiempoPreparacion = 'No Asignado';
+        }
+      }
       $payload = json_encode($pedido);
 
       $response->getBody()->write($payload);
@@ -54,15 +59,38 @@ class PedidoController extends Pedido implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
+      $parametros = $request->getQueryParams();
+
+      if(isset($parametros['codigoPedido'])){
+        $pedido = Pedido::obtenerPedido($parametros['codigoPedido']);
+      $pedido->productos = $pedido->obtenerProductosDelPedido();
+      foreach($pedido->productos as $producto){
+        if($producto->tiempoPreparacion == 0){
+          $producto->tiempoPreparacion = 'No Asignado';
+        }
+      }
+      $payload = json_encode($pedido);
+
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
+      }
+      else{
         $lista = Pedido::obtenerTodos();
         foreach($lista as $pedido){
           $pedido->productos = $pedido->obtenerProductosDelPedido();
+          foreach($pedido->productos as $producto){
+            if($producto->tiempoPreparacion == 0){
+              $producto->tiempoPreparacion = 'No Asignado';
+            }
+          }
         }
         $payload = json_encode(array("listaPedido" => $lista));
 
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');
+      }
     }
     
     public function ModificarUno($request, $response, $args)
@@ -188,7 +216,6 @@ class PedidoController extends Pedido implements IApiUsable
     }
 
     public function IniciarPreparacionController($request, $response, $args){
-      echo "Iniciar Preparacion\n";
       $parametros = $request->getParsedBody();
 
       $idProducto = $parametros['producto'];
@@ -198,6 +225,57 @@ class PedidoController extends Pedido implements IApiUsable
       Pedido::IniciarPreparacion($idProducto, $idUsuario, $tiempo);
 
       $payload = json_encode(array("mensaje" => "La preparacion se inicio con exito"));
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function FinalizarPreparacionController($request, $response, $args){
+      $parametros = $request->getParsedBody();
+      
+      $idProducto = $parametros['producto'];
+      $codigoPedido = $parametros['codigoPedido'];
+      $paraServir = true;
+
+      if(Producto::obtenerProductoEnPedido($idProducto)->estado != 3){
+        $payload = json_encode(array("mensaje" => "Este producto no esta en preparacion, no se puede finalizar"));
+      }
+      else{
+        Pedido::FinalizarPreparacion($idProducto);
+
+        $payload = json_encode(array("mensaje" => "La preparacion se finalizo con exito"));
+      }
+
+      $ped = Pedido::obtenerPedido($codigoPedido);
+      $ped->productos = $ped->obtenerProductosDelPedido();
+
+      foreach($ped->productos as $producto){
+        if($producto->estado != "listo para servir"){
+          $paraServir = false;
+        }
+      }
+      
+      if($paraServir){
+        Pedido::CambiarEstadoPedido(4,$codigoPedido);
+      }
+
+      $response->getBody()->write($payload);
+          return $response
+            ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function ObtenerPedidosListosParaSevir($request, $response, $args){
+      $lista = Pedido::ListarPedidosPorEstado(4);
+        foreach($lista as $pedido){
+          $pedido->productos = $pedido->obtenerProductosDelPedido();
+          foreach($pedido->productos as $producto){
+            if($producto->tiempoPreparacion == 0){
+              $producto->tiempoPreparacion = 'No Asignado';
+            }
+          }
+        }
+        $payload = json_encode(array("listaPedido" => $lista));
 
         $response->getBody()->write($payload);
         return $response

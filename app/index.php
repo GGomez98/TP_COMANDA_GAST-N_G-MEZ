@@ -69,6 +69,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
+  $group->get('/listosParaServir',\PedidoController::class . ':ObtenerPedidosListosParaSevir');
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')
@@ -86,6 +87,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/cargarCSV',\PedidoController::class . ':CargarProductosDesdeCSVController');
   $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
   $group->put('/iniciarPreparacion',\PedidoController::class . ':IniciarPreparacionController');
+  $group->put('/finalizarPreparacion',\PedidoController::class . ':FinalizarPreparacionController');
 });
 
 $app->group('/sectores', function (RouteCollectorProxy $group) {

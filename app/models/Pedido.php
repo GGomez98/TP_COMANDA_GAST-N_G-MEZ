@@ -80,7 +80,7 @@ class Pedido{
 
     public function obtenerProductosDelPedido(){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT menu.id, menu.nombre, menu.precio, estadospedido.nombre as estado, sectores.nombre as sector FROM menu JOIN productospedidos on menu.id = productospedidos.idProducto JOIN estadospedido on estadospedido.id = productospedidos.idEstado JOIN sectores on sectores.id = menu.idSector WHERE productospedidos.idPedido = :idPedido;");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id, menu.nombre, menu.precio, estadospedido.nombre as estado, productospedidos.tiempoPreparacion, sectores.nombre as sector, usuarios.usuario as usuarioPreparacion, pedidos.codigoPedido FROM menu JOIN productospedidos on menu.id = productospedidos.idProducto JOIN usuarios on productospedidos.idUsuarioPreparacion = usuarios.id JOIN estadospedido on estadospedido.id = productospedidos.idEstado JOIN sectores on sectores.id = menu.idSector JOIN pedidos on productospedidos.idPedido = pedidos.id WHERE productospedidos.idPedido = :idPedido;");
         $consulta->bindValue(':idPedido', $this::obtenerPedido($this->codigoPedido)->id, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -203,5 +203,29 @@ class Pedido{
         $consulta->bindValue(':idUsuarioPreparacion', $idUsuario, PDO::PARAM_INT);
         $consulta->bindValue(':tiempoPreparacion', $tiempo, PDO::PARAM_INT);
         $consulta->execute();
+    }
+
+    public static function FinalizarPreparacion($idProducto){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE productospedidos SET productospedidos.idEstado = 4 WHERE productospedidos.id = :idPedido;");
+        $consulta->bindValue(':idPedido', $idProducto, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+    public static function CambiarEstadoPedido($idEstado, $codigoPedido){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET pedidos.idEstado = :idEstado WHERE pedidos.codigoPedido = :codigoPedido;");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_INT);
+        $consulta->bindValue(':idEstado', $idEstado, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+    public static function ListarPedidosPorEstado($idEstado){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidos.id, mesas.codigoMesa, estadospedido.nombre as estado, usuarios.usuario as mozo, pedidos.codigoPedido FROM pedidos JOIN mesas on mesas.id = pedidos.idMesa JOIN estadospedido on estadospedido.id = pedidos.idEstado JOIN usuarios on usuarios.id = pedidos.idMozo WHERE pedidos.idEstado = :idEstado");
+        $consulta->bindValue(':idEstado', $idEstado, PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 }

@@ -54,7 +54,7 @@ class Producto
 
     public static function obtenerProductoEnPedido($idProducto){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id, productospedidos.idProducto, productospedidos.idEstado, productospedidos.idUsuarioPreparacion, productospedidos.tiempoPreparacion FROM productospedidos WHERE id = :id;");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id as id, productospedidos.idProducto as nombre, productospedidos.idEstado as estado, productospedidos.idUsuarioPreparacion as usuarioPreparacion, productospedidos.tiempoPreparacion as tiempoPreparacion FROM productospedidos WHERE id = :id;");
         $consulta->bindValue(':id', $idProducto, PDO::PARAM_INT);
         $consulta->execute();
 
