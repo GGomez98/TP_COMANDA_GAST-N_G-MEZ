@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-07-2024 a las 07:07:34
+-- Tiempo de generación: 07-07-2024 a las 03:38:01
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -29,15 +29,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `calificaciones` (
   `id` int(11) NOT NULL,
-  `puntajeRestaurante` int(11) NOT NULL,
-  `puntajeMesa` int(11) NOT NULL,
-  `puntajeCocinero` int(11) NOT NULL,
-  `puntajeMozo` int(11) NOT NULL,
   `descripcion` varchar(66) NOT NULL,
-  `idMozo` int(11) NOT NULL,
-  `idCocinero` int(11) NOT NULL,
-  `idMesa` int(11) NOT NULL
+  `idMesa` int(11) NOT NULL,
+  `idPedido` int(11) NOT NULL,
+  `puntaje` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `calificaciones`
+--
+
+INSERT INTO `calificaciones` (`id`, `descripcion`, `idMesa`, `idPedido`, `puntaje`) VALUES
+(2, 'Deliciosa comida y excelente servicio', 4, 312, 10),
+(3, 'La comida esta muy cara y no era muy buena', 5, 207, 5);
 
 -- --------------------------------------------------------
 
@@ -72,12 +76,8 @@ CREATE TABLE `estadosmesa` (
 INSERT INTO `estadosmesa` (`id`, `nombre`) VALUES
 (1, 'cerrada'),
 (2, 'cliente esperando pedido'),
-(3, 'cliente comiendo'),
-(4, 'cliente pagando'),
-(1, 'cerrada'),
-(2, 'cliente esperando pedido'),
-(3, 'cliente comiendo'),
-(4, 'cliente pagando');
+(3, 'con cliente comiendo'),
+(4, 'con cliente pagando');
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,11 @@ INSERT INTO `menu` (`id`, `nombre`, `precio`, `idSector`) VALUES
 (58, 'Frutas', 7378, 4),
 (59, 'Pasta', 3991, 3),
 (60, 'Sopa', 7171, 3),
-(61, 'Negroni', 3000, 2);
+(61, 'Negroni', 3000, 2),
+(62, 'Milanesa a caballo', 5000, 3),
+(63, 'Hamburguesa de Garbanzo', 3000, 3),
+(64, 'Cerveza Corona', 1000, 2),
+(65, 'Daikiri', 2000, 2);
 
 -- --------------------------------------------------------
 
@@ -152,23 +156,25 @@ INSERT INTO `menu` (`id`, `nombre`, `precio`, `idSector`) VALUES
 CREATE TABLE `mesas` (
   `id` int(11) NOT NULL,
   `idEstado` varchar(256) NOT NULL,
-  `codigoMesa` varchar(5) NOT NULL
+  `codigoMesa` varchar(5) NOT NULL,
+  `cantidadUso` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `mesas`
 --
 
-INSERT INTO `mesas` (`id`, `idEstado`, `codigoMesa`) VALUES
-(2, '1', '451as'),
-(3, '1', '35f43'),
-(4, '2', '654ss'),
-(5, '1', '4s4da'),
-(6, '1', 'Z6E9v'),
-(7, '1', 'vP1PB'),
-(8, '1', 'fvwUc'),
-(9, '1', 'MTT47'),
-(10, '1', 'sAXtl');
+INSERT INTO `mesas` (`id`, `idEstado`, `codigoMesa`, `cantidadUso`) VALUES
+(2, '1', '451as', 0),
+(3, '1', '35f43', 0),
+(4, '1', '654ss', 1),
+(5, '1', '4s4da', 1),
+(6, '2', 'Z6E9v', 0),
+(7, '1', 'vP1PB', 0),
+(8, '1', 'fvwUc', 0),
+(9, '1', 'MTT47', 0),
+(10, '1', 'sAXtl', 0),
+(106, '2', 'abcde', 0);
 
 -- --------------------------------------------------------
 
@@ -182,6 +188,7 @@ CREATE TABLE `pedidos` (
   `idEstado` int(11) NOT NULL,
   `idMozo` int(11) NOT NULL,
   `codigoPedido` varchar(5) NOT NULL,
+  `precioFinal` float UNSIGNED DEFAULT NULL,
   `fechaCreacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -189,187 +196,9 @@ CREATE TABLE `pedidos` (
 -- Volcado de datos para la tabla `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `idMesa`, `idEstado`, `idMozo`, `codigoPedido`, `fechaCreacion`) VALUES
-(132, 2, 1, 0, 'PZWTJ', '0000-00-00'),
-(133, 5, 1, 0, 'uv5H9', '0000-00-00'),
-(134, 3, 1, 0, '0ayXs', '0000-00-00'),
-(135, 2, 1, 0, 'Wc4pH', '0000-00-00'),
-(136, 2, 1, 0, 'N0wxA', '0000-00-00'),
-(137, 5, 1, 0, '5v5jM', '0000-00-00'),
-(138, 4, 1, 0, 'Azziy', '0000-00-00'),
-(139, 5, 1, 0, 'HA251', '0000-00-00'),
-(140, 3, 1, 0, 'YHacw', '0000-00-00'),
-(141, 3, 1, 0, 'CbFQB', '0000-00-00'),
-(142, 5, 1, 0, 'X0V3C', '0000-00-00'),
-(143, 3, 1, 0, 'UvfYy', '0000-00-00'),
-(144, 4, 1, 0, 'pfL9B', '0000-00-00'),
-(145, 5, 1, 0, 'IfNgj', '0000-00-00'),
-(146, 5, 1, 0, 'VXYkf', '0000-00-00'),
-(147, 2, 1, 0, 'DgYsZ', '0000-00-00'),
-(148, 4, 1, 0, '1o7qy', '0000-00-00'),
-(149, 4, 1, 0, 'h5VEW', '0000-00-00'),
-(150, 3, 1, 0, 'Bwukg', '0000-00-00'),
-(151, 2, 1, 0, 'uDRiw', '0000-00-00'),
-(152, 3, 1, 0, 'qI7YW', '0000-00-00'),
-(153, 2, 1, 0, 'hHDhG', '0000-00-00'),
-(154, 5, 1, 0, 'T6diD', '0000-00-00'),
-(155, 2, 1, 0, 'hyfPa', '0000-00-00'),
-(156, 5, 1, 0, 'Qsky4', '0000-00-00'),
-(157, 3, 1, 0, 'lQVah', '0000-00-00'),
-(158, 2, 1, 0, 'ZbnkT', '0000-00-00'),
-(159, 4, 1, 0, '83FuG', '0000-00-00'),
-(160, 4, 1, 0, 'rcnFg', '0000-00-00'),
-(161, 3, 1, 0, 'fKanH', '0000-00-00'),
-(162, 4, 1, 0, 'ksKVx', '0000-00-00'),
-(163, 3, 1, 0, 'm4VsC', '0000-00-00'),
-(164, 5, 1, 0, '6OWV3', '0000-00-00'),
-(165, 2, 1, 0, 'W0R3Y', '0000-00-00'),
-(166, 4, 1, 0, 'Di89L', '0000-00-00'),
-(167, 5, 1, 0, 'KbTjF', '0000-00-00'),
-(168, 4, 1, 0, 'PiheA', '0000-00-00'),
-(169, 2, 1, 0, 'I2GhX', '0000-00-00'),
-(170, 3, 1, 0, 'OWNmy', '0000-00-00'),
-(171, 4, 1, 0, 'SN5gl', '0000-00-00'),
-(172, 4, 1, 0, 'TMDWN', '0000-00-00'),
-(173, 4, 1, 0, 'v4a5j', '0000-00-00'),
-(174, 5, 1, 0, 'PZeer', '0000-00-00'),
-(175, 3, 1, 0, 'gSg3j', '0000-00-00'),
-(176, 2, 1, 0, 'QU9ky', '0000-00-00'),
-(177, 4, 1, 0, 'uGMbc', '0000-00-00'),
-(178, 5, 1, 0, 'MfB1Q', '0000-00-00'),
-(179, 3, 1, 0, 'ORbMl', '0000-00-00'),
-(180, 5, 1, 0, 'Lybwk', '0000-00-00'),
-(181, 2, 1, 0, '6a0oT', '0000-00-00'),
-(182, 3, 1, 0, 'sDAOS', '0000-00-00'),
-(183, 4, 1, 0, 'P053Z', '0000-00-00'),
-(184, 3, 1, 0, 'yNLNY', '0000-00-00'),
-(185, 5, 1, 0, 'HhhO4', '0000-00-00'),
-(186, 5, 1, 0, 'vvtQW', '0000-00-00'),
-(187, 3, 1, 0, 'iAQGV', '0000-00-00'),
-(188, 5, 1, 0, 'sQuen', '0000-00-00'),
-(189, 4, 1, 0, 'ENDWy', '0000-00-00'),
-(190, 3, 1, 0, 'imgD3', '0000-00-00'),
-(191, 5, 1, 0, 'htrCk', '0000-00-00'),
-(192, 3, 1, 0, 'rsX4u', '0000-00-00'),
-(193, 2, 1, 0, 'dK43p', '0000-00-00'),
-(194, 4, 1, 0, 'oRw6U', '0000-00-00'),
-(195, 2, 1, 0, 'G9RWE', '0000-00-00'),
-(196, 4, 1, 0, 'MRPeI', '0000-00-00'),
-(197, 2, 1, 0, 'ZI1qD', '0000-00-00'),
-(198, 2, 1, 0, 'FvQq5', '0000-00-00'),
-(199, 3, 1, 0, 'kFlmK', '0000-00-00'),
-(200, 5, 1, 0, '711OU', '0000-00-00'),
-(201, 2, 1, 0, 'mMsiD', '0000-00-00'),
-(202, 3, 1, 0, 'ZUZvF', '0000-00-00'),
-(203, 4, 1, 0, 'g3EWg', '0000-00-00'),
-(204, 5, 1, 0, '3VAw1', '0000-00-00'),
-(205, 4, 1, 0, 'FtTEN', '0000-00-00'),
-(206, 4, 1, 0, 'TcjTe', '0000-00-00'),
-(207, 5, 1, 65, 'mR5Gg', '0000-00-00'),
-(208, 2, 1, 65, 'jhD7O', '0000-00-00'),
-(209, 2, 1, 65, 'uZ0fF', '0000-00-00'),
-(210, 3, 1, 65, 'zY5Me', '0000-00-00'),
-(211, 5, 1, 68, 'TuKiE', '0000-00-00'),
-(212, 2, 1, 68, 'AKhY3', '0000-00-00'),
-(213, 3, 1, 65, 'amyp6', '0000-00-00'),
-(214, 4, 1, 68, '1rzvb', '0000-00-00'),
-(215, 3, 1, 65, 'mWCAe', '0000-00-00'),
-(216, 2, 1, 65, 'Ofzdu', '0000-00-00'),
-(217, 4, 1, 65, 'RSGty', '0000-00-00'),
-(218, 2, 1, 65, 'kNdPq', '0000-00-00'),
-(219, 5, 1, 65, 'h27oZ', '0000-00-00'),
-(220, 2, 1, 65, 'qUdDo', '0000-00-00'),
-(221, 4, 1, 68, 'bKkGb', '0000-00-00'),
-(222, 4, 1, 65, 'Tyk7x', '0000-00-00'),
-(223, 2, 1, 65, 'OvGDy', '0000-00-00'),
-(224, 2, 1, 68, 'IcAi8', '0000-00-00'),
-(225, 3, 1, 65, 'b5bSm', '0000-00-00'),
-(226, 4, 1, 68, 'pl2NF', '0000-00-00'),
-(227, 3, 1, 65, 'fjs9o', '0000-00-00'),
-(228, 4, 1, 68, 'iqzk4', '0000-00-00'),
-(229, 4, 1, 65, 'a5Ekr', '0000-00-00'),
-(230, 4, 1, 65, 'QftGL', '0000-00-00'),
-(231, 4, 1, 65, 'gXrsP', '0000-00-00'),
-(232, 2, 1, 65, 'PZWTJ', '0000-00-00'),
-(233, 5, 1, 65, 'uv5H9', '0000-00-00'),
-(234, 3, 1, 65, '0ayXs', '0000-00-00'),
-(235, 2, 1, 65, 'Wc4pH', '0000-00-00'),
-(236, 2, 1, 65, 'N0wxA', '0000-00-00'),
-(237, 5, 1, 68, '5v5jM', '0000-00-00'),
-(238, 4, 1, 68, 'Azziy', '0000-00-00'),
-(239, 5, 1, 65, 'HA251', '0000-00-00'),
-(240, 3, 1, 65, 'YHacw', '0000-00-00'),
-(241, 3, 1, 65, 'CbFQB', '0000-00-00'),
-(242, 5, 1, 65, 'X0V3C', '0000-00-00'),
-(243, 3, 1, 65, 'UvfYy', '0000-00-00'),
-(244, 4, 1, 65, 'pfL9B', '0000-00-00'),
-(245, 5, 1, 65, 'IfNgj', '0000-00-00'),
-(246, 5, 1, 68, 'VXYkf', '0000-00-00'),
-(247, 2, 1, 65, 'DgYsZ', '0000-00-00'),
-(248, 4, 1, 65, '1o7qy', '0000-00-00'),
-(249, 4, 1, 65, 'h5VEW', '0000-00-00'),
-(250, 3, 1, 65, 'Bwukg', '0000-00-00'),
-(251, 2, 1, 65, 'uDRiw', '0000-00-00'),
-(252, 3, 1, 65, 'qI7YW', '0000-00-00'),
-(253, 2, 1, 65, 'hHDhG', '0000-00-00'),
-(254, 5, 1, 68, 'T6diD', '0000-00-00'),
-(255, 2, 1, 68, 'hyfPa', '0000-00-00'),
-(256, 5, 1, 68, 'Qsky4', '0000-00-00'),
-(257, 3, 1, 68, 'lQVah', '0000-00-00'),
-(258, 2, 1, 65, 'ZbnkT', '0000-00-00'),
-(259, 4, 1, 68, '83FuG', '0000-00-00'),
-(260, 4, 1, 65, 'rcnFg', '0000-00-00'),
-(261, 3, 1, 65, 'fKanH', '0000-00-00'),
-(262, 4, 1, 68, 'ksKVx', '0000-00-00'),
-(263, 3, 1, 68, 'm4VsC', '0000-00-00'),
-(264, 5, 1, 65, '6OWV3', '0000-00-00'),
-(265, 2, 1, 65, 'W0R3Y', '0000-00-00'),
-(266, 4, 1, 68, 'Di89L', '0000-00-00'),
-(267, 5, 1, 68, 'KbTjF', '0000-00-00'),
-(268, 4, 1, 65, 'PiheA', '0000-00-00'),
-(269, 2, 1, 65, 'I2GhX', '0000-00-00'),
-(270, 3, 1, 68, 'OWNmy', '0000-00-00'),
-(271, 4, 1, 65, 'SN5gl', '0000-00-00'),
-(272, 4, 1, 65, 'TMDWN', '0000-00-00'),
-(273, 4, 1, 65, 'v4a5j', '0000-00-00'),
-(274, 5, 1, 68, 'PZeer', '0000-00-00'),
-(275, 3, 1, 65, 'gSg3j', '0000-00-00'),
-(276, 2, 1, 68, 'QU9ky', '0000-00-00'),
-(277, 4, 1, 68, 'uGMbc', '0000-00-00'),
-(278, 5, 1, 68, 'MfB1Q', '0000-00-00'),
-(279, 3, 1, 65, 'ORbMl', '0000-00-00'),
-(280, 5, 1, 68, 'Lybwk', '0000-00-00'),
-(281, 2, 1, 65, '6a0oT', '0000-00-00'),
-(282, 3, 1, 65, 'sDAOS', '0000-00-00'),
-(283, 4, 1, 65, 'P053Z', '0000-00-00'),
-(284, 3, 1, 68, 'yNLNY', '0000-00-00'),
-(285, 5, 1, 68, 'HhhO4', '0000-00-00'),
-(286, 5, 1, 65, 'vvtQW', '0000-00-00'),
-(287, 3, 1, 68, 'iAQGV', '0000-00-00'),
-(288, 5, 1, 65, 'sQuen', '0000-00-00'),
-(289, 4, 1, 65, 'ENDWy', '0000-00-00'),
-(290, 3, 1, 65, 'imgD3', '0000-00-00'),
-(291, 5, 1, 68, 'htrCk', '0000-00-00'),
-(292, 3, 1, 68, 'rsX4u', '0000-00-00'),
-(293, 2, 1, 68, 'dK43p', '0000-00-00'),
-(294, 4, 1, 65, 'oRw6U', '0000-00-00'),
-(295, 2, 1, 65, 'G9RWE', '0000-00-00'),
-(296, 4, 1, 65, 'MRPeI', '0000-00-00'),
-(297, 2, 1, 68, 'ZI1qD', '0000-00-00'),
-(298, 2, 1, 65, 'FvQq5', '0000-00-00'),
-(299, 3, 1, 68, 'kFlmK', '0000-00-00'),
-(300, 5, 1, 65, '711OU', '0000-00-00'),
-(301, 2, 1, 65, 'mMsiD', '0000-00-00'),
-(302, 3, 1, 68, 'ZUZvF', '0000-00-00'),
-(303, 4, 1, 68, 'g3EWg', '0000-00-00'),
-(304, 5, 1, 65, '3VAw1', '0000-00-00'),
-(305, 4, 1, 68, 'FtTEN', '0000-00-00'),
-(306, 4, 1, 68, 'TcjTe', '0000-00-00'),
-(307, 4, 1, 65, 'd4f5s', '0000-00-00'),
-(308, 4, 1, 65, 'd4f5s', '0000-00-00'),
-(309, 4, 1, 65, 'd4f5s', '0000-00-00'),
-(310, 4, 1, 65, 'd4f5s', '0000-00-00'),
-(311, 4, 1, 65, 'd4f5s', '0000-00-00');
+INSERT INTO `pedidos` (`id`, `idMesa`, `idEstado`, `idMozo`, `codigoPedido`, `precioFinal`, `fechaCreacion`) VALUES
+(207, 5, 5, 65, 'mR5Gg', 56928, '0000-00-00'),
+(312, 4, 5, 65, 'sd45a', 14000, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -392,7 +221,8 @@ INSERT INTO `perfiles` (`id`, `nombre`) VALUES
 (3, 'cocinero'),
 (4, 'bartender'),
 (5, 'cervecero'),
-(7, 'admin');
+(7, 'admin'),
+(8, 'repostero');
 
 -- --------------------------------------------------------
 
@@ -414,12 +244,25 @@ CREATE TABLE `productospedidos` (
 --
 
 INSERT INTO `productospedidos` (`id`, `idProducto`, `idPedido`, `idEstado`, `idUsuarioPreparacion`, `tiempoPreparacion`) VALUES
-(25, 2, 207, 1, 64, 0),
-(26, 42, 207, 1, 65, 0),
-(27, 43, 207, 1, 64, 0),
-(28, 44, 207, 1, 0, 0),
-(29, 45, 207, 1, 0, 0),
-(30, 46, 207, 1, 0, 0);
+(25, 2, 207, 5, 68, 20),
+(26, 42, 207, 5, 68, 30),
+(27, 43, 207, 5, 68, 30),
+(28, 44, 207, 5, 68, 30),
+(29, 45, 207, 5, 68, 30),
+(30, 46, 207, 5, 68, 30),
+(31, 47, 207, 5, 68, 30),
+(32, 58, 207, 5, 68, 30),
+(33, 52, 207, 5, 68, 30),
+(34, 62, 312, 5, 67, 30),
+(35, 63, 312, 5, 67, 30),
+(36, 63, 312, 5, 67, 30),
+(37, 64, 312, 5, 71, 5),
+(38, 65, 312, 5, 71, 5),
+(39, 62, 314, 1, 72, 0),
+(40, 63, 314, 1, 72, 0),
+(41, 63, 314, 1, 72, 0),
+(42, 64, 314, 1, 72, 0),
+(43, 65, 314, 1, 72, 0);
 
 -- --------------------------------------------------------
 
@@ -468,7 +311,8 @@ INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `idPerfil`, `fechaBaja`) VALUE
 (68, 'luis_garcia', '$2y$10$NQVKCgtuB91D0e.83BdTkOoPnZUKKmIgi81Pcrb10RbEn55tK0D66', 2, NULL),
 (69, 'Marcos', '$2y$10$.neNMIhTavT3iQRa8A/xO.x3WgUECrMNtHE.LNhEyIHTA8wdX/r9e', 7, NULL),
 (70, 'Gastón', '$2y$10$lMaDQ.YcUUj7bt30AUZW0eWXUgIOG/XXTz2T9YK59clfsj7VG83bC', 7, NULL),
-(71, 'luis_perez', '$2y$10$2SOUxjEKZQS87iUBmAhkEuZhKPcYqT6O1cGnQi.2qPI6xc/FOaCru', 5, NULL);
+(71, 'luis_perez', '$2y$10$2SOUxjEKZQS87iUBmAhkEuZhKPcYqT6O1cGnQi.2qPI6xc/FOaCru', 5, NULL),
+(72, 'No Asignado', '', 0, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -484,6 +328,12 @@ ALTER TABLE `calificaciones`
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `estadosmesa`
+--
+ALTER TABLE `estadosmesa`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -542,13 +392,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `calificaciones`
 --
 ALTER TABLE `calificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `estadosmesa`
+--
+ALTER TABLE `estadosmesa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `estadospedido`
@@ -560,19 +416,19 @@ ALTER TABLE `estadospedido`
 -- AUTO_INCREMENT de la tabla `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=312;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=315;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -584,7 +440,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `productospedidos`
 --
 ALTER TABLE `productospedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT de la tabla `sectores`
@@ -596,7 +452,7 @@ ALTER TABLE `sectores`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

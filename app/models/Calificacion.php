@@ -26,4 +26,12 @@ class Calificacion{
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Calificacion');
     }
+
+    public static function ObtenerLosMejoresComentarios(){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT calificaciones.id, calificaciones.descripcion, mesas.codigoMesa as codigoMesa, pedidos.codigoPedido as codigoPedido, calificaciones.puntaje FROM calificaciones JOIN mesas ON calificaciones.idMesa = mesas.id JOIN pedidos ON calificaciones.idPedido = pedidos.id ORDER BY calificaciones.puntaje DESC LIMIT 5");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Calificacion');
+    }
 }

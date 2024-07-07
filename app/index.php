@@ -112,6 +112,7 @@ $app->group('/sectores', function (RouteCollectorProxy $group) {
 
 $app->group('/calificaciones', function (RouteCollectorProxy $group){
       $group->post('[/]',\CalificacionController::class . ':CrearUna');
+      $group->get('/mejoresComentarios',\CalificacionController::class . ':ObtenerMejores');
       $group->get('[/]',\CalificacionController::class . ':ObtenerTodas');
 });
 

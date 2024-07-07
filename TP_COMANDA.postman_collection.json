@@ -12,6 +12,16 @@
 				{
 					"name": "01-Obtener todos los usuarios",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNTY5MTksImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.Vf-l6YuaEKhSU0rkWYeVgfxfjmXvLwYU7gPI1vYeiuM",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -31,10 +41,20 @@
 				{
 					"name": "02-Obtener usuario especifico",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTk5NzM5NzMsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.TRNLqUQuiIuMXzkMc1aHpulc7dXVH2K_u67hjvdXFGA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:666/usuarios/jorge",
+							"raw": "http://localhost:666/usuarios/maria_gomez",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -42,7 +62,7 @@
 							"port": "666",
 							"path": [
 								"usuarios",
-								"jorge"
+								"maria_gomez"
 							]
 						}
 					},
@@ -51,6 +71,16 @@
 				{
 					"name": "03-Cargar Usuario",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxOTM3NTIsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.y5atR9VFSMVZDXLppQRUu2scbVf8gSKSOObnpoinO68",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -58,7 +88,7 @@
 							"formdata": [
 								{
 									"key": "usuario",
-									"value": "Gastón",
+									"value": "luis_perez",
 									"type": "text"
 								},
 								{
@@ -68,7 +98,7 @@
 								},
 								{
 									"key": "perfil",
-									"value": "admin",
+									"value": "cervecero",
 									"type": "text"
 								}
 							]
@@ -152,12 +182,17 @@
 							"formdata": [
 								{
 									"key": "nombre",
-									"value": "Cerveza",
+									"value": "Daikiri",
 									"type": "text"
 								},
 								{
 									"key": "precio",
-									"value": "3000",
+									"value": "2000",
+									"type": "text"
+								},
+								{
+									"key": "sector",
+									"value": "2",
 									"type": "text"
 								}
 							]
@@ -264,6 +299,64 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "25-Iniciar Preparacion",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"producto\": 38,\r\n            \"tiempoPreparacion\": 5,\r\n            \"usuarioPreparacion\":71\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/iniciarPreparacion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"iniciarPreparacion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "26-Finalizar Preparacion",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"producto\": 38,\r\n            \"codigoPedido\":\"sd45a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/finalizarPreparacion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"finalizarPreparacion"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -273,6 +366,16 @@
 				{
 					"name": "06-Cargar Mesa",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -280,7 +383,7 @@
 							"formdata": [
 								{
 									"key": "codigoMesa",
-									"value": "4s4da",
+									"value": "abcde",
 									"type": "text"
 								}
 							]
@@ -309,6 +412,16 @@
 				{
 					"name": "07-Obtener todas las mesas",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -320,6 +433,36 @@
 							"port": "666",
 							"path": [
 								"mesas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "34-Obtener Mesa mas usada",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/mesas/mesaMasUsada",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas",
+								"mesaMasUsada"
 							]
 						}
 					},
@@ -374,6 +517,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "31- Cerrar Mesa",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"codigoMesa\": \"sd45a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/mesas/cerrarMesa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"mesas",
+								"cerrarMesa"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -381,8 +553,47 @@
 			"name": "Pedidos",
 			"item": [
 				{
+					"name": "30-Cobrar Cuenta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"codigoPedido\": \"sd45a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/cobrarCuenta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"cobrarCuenta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "08-Cargar Pedido",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxOTI2MjEsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.7u3kxs6k4Kwi3vUheyYFpO04TN89WBYQW-ll887yAjY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -390,12 +601,12 @@
 							"formdata": [
 								{
 									"key": "codigoMesa",
-									"value": "654ss",
+									"value": "Z6E9v",
 									"type": "text"
 								},
 								{
 									"key": "codigoPedido",
-									"value": "d4f5s",
+									"value": "a98w6",
 									"type": "text"
 								},
 								{
@@ -406,7 +617,7 @@
 								{
 									"key": "foto",
 									"type": "file",
-									"src": "/C:/Users/Usuario/Descargas/mesa-buffet-loft-Table-2-1024x683.jpg"
+									"src": "/C:/Users/Usuario/Desktop/a24-frente1-c836181795b66df5f616843353932240-640-0.png"
 								}
 							]
 						},
@@ -438,6 +649,33 @@
 							"port": "666",
 							"path": [
 								"pedidos"
+							],
+							"query": [
+								{
+									"key": "codigoPedido",
+									"value": "Azziy",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "27-Listar pedidos listos para servir",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/pedidos/listosParaServir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"listosParaServir"
 							]
 						}
 					},
@@ -449,7 +687,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:666/pedidos/384jj",
+							"raw": "http://localhost:666/pedidos/sd45a",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -457,7 +695,7 @@
 							"port": "666",
 							"path": [
 								"pedidos",
-								"384jj"
+								"sd45a"
 							]
 						}
 					},
@@ -471,7 +709,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTk5NzMyMjIsImRhdGEiOnsidXN1YXJpbyI6ImFuYV9tYXJ0aW5leiIsInJvbCI6ImJhcnRlbmRlciJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.VpUd4GWypf91iJXy7FBpViOA1TFYORGf55LpqumBVFI",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNjAwMTUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.MUFwwQqgB1vMKPggbaBaXd3xVDF4gt8MT8kURWgm3vc",
 									"type": "string"
 								}
 							]
@@ -483,12 +721,12 @@
 							"formdata": [
 								{
 									"key": "producto",
-									"value": "Agua",
+									"value": "65",
 									"type": "text"
 								},
 								{
 									"key": "codigoPedido",
-									"value": "mR5Gg",
+									"value": "a98w6",
 									"type": "text"
 								}
 							]
@@ -509,8 +747,18 @@
 					"response": []
 				},
 				{
-					"name": "13-Cambiar estado pedido",
+					"name": "13-Tomar Orden",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNjAwMTUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.MUFwwQqgB1vMKPggbaBaXd3xVDF4gt8MT8kURWgm3vc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -518,13 +766,13 @@
 							"formdata": [
 								{
 									"key": "codigoPedido",
-									"value": "342df",
+									"value": "sd45a",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:666/pedidos/cambiarEstado?usuario=pedro&clave=dasdqsdw2sd23",
+							"raw": "http://localhost:666/pedidos/tomarOrden",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -532,17 +780,52 @@
 							"port": "666",
 							"path": [
 								"pedidos",
-								"cambiarEstado"
+								"tomarOrden"
 							],
 							"query": [
 								{
 									"key": "usuario",
-									"value": "pedro"
+									"value": "pedro",
+									"disabled": true
 								},
 								{
 									"key": "clave",
-									"value": "dasdqsdw2sd23"
+									"value": "dasdqsdw2sd23",
+									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "28-Entregar Pedido",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigoPedido",
+									"value": "sd45a",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/entregarPedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"entregarPedido"
 							]
 						}
 					},
@@ -637,6 +920,172 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "24-Obtener productos pedidos a cocina",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxOTM4NzUsImRhdGEiOnsidXN1YXJpbyI6ImNhcmxvc19sb3BleiIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRQIENvbWFuZGEifQ.rsTeJztcs6XRsaqBKoaP6lLNto0AtYrXxXAtZvEoNsE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/sectores/cocina",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"sectores",
+								"cocina"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "29-Obtener productos pedidos a patio",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAzMDc1ODQsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.d8wjbTLpDg6Pnd0v_M-EsTTqVmv8lLBHKbiGlCAasEs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:666/sectores/patio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"sectores",
+								"patio"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Calificaciones",
+			"item": [
+				{
+					"name": "33-Obtener todas las calificaciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/calificaciones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"calificaciones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "35-Obtener los mejores comentarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/calificaciones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"calificaciones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "32-Agregar Calificacion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "descripcion",
+									"value": "Deliciosa comida y excelente servicio",
+									"type": "text"
+								},
+								{
+									"key": "codigoPedido",
+									"value": "sd45a",
+									"type": "text"
+								},
+								{
+									"key": "puntaje",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/calificaciones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"calificaciones"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -650,12 +1099,12 @@
 					"formdata": [
 						{
 							"key": "usuario",
-							"value": "ana_martinez",
+							"value": "juan_perez",
 							"type": "text"
 						},
 						{
 							"key": "clave",
-							"value": "mysecret",
+							"value": "clave123",
 							"type": "text"
 						}
 					]

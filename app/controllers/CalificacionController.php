@@ -42,4 +42,13 @@ class CalificacionController extends Calificacion{
         return $response
           ->withHeader('Content-Type', 'application/json');
     }
+
+    public function ObtenerMejores($request, $response, $args){
+        $lista = Calificacion::ObtenerLosMejoresComentarios();
+        $payload = json_encode(array("calificaciones" => $lista));
+
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
 }
