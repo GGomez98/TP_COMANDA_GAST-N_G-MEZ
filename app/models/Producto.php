@@ -121,4 +121,12 @@ class Producto
 
         fclose($file);
     }
+
+    public static function cambiarEstadoProducto($idEstado, $id){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE productospedidos SET idEstado = :idEstado WHERE id = :id");
+        $consulta->bindValue(":idEstado", $idEstado, PDO::PARAM_INT);
+        $consulta->bindValue(":id", $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
 }

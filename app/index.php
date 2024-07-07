@@ -19,6 +19,7 @@ require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/AutentificadorJWTController.php';
+require_once './controllers/CalificacionController.php';
 require_once './middlewares/DatosMiddleware.php';
 require_once './middlewares/RolMiddleware.php';
 require_once './middlewares/AuthMiddleware.php';
@@ -57,6 +58,7 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
+  $group->get('/mesaMasUsada', \MesaController::class . ':MostrarMesaMasUsada');
   $group->get('[/]', \MesaController::class . ':TraerTodos')
         ->add(new RolMiddleware(["Socio", "Mozo"]))
         ->add(\AuthMiddleware::class . ":verificarLoginMW");
@@ -66,12 +68,14 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
         ->add(\DatosMiddleware::class . ":cargarMesaMW");
   $group->post('/cargarCSV',\MesaController::class . ':CargarMesasDesdeCSVController');
   $group->post('/descargarCSV',\MesaController::class . ':GuardarMesasEnCSV');
+  $group->put('/cerrarMesa', \MesaController::class . ':CerrarMesa');
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('/listosParaServir',\PedidoController::class . ':ObtenerPedidosListosParaSevir');
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
+  $group->post('/entregarPedido',\PedidoController::class . ':EntregarPedido');
   $group->post('[/]', \PedidoController::class . ':CargarUno')
         ->add(new RolMiddleware(["Mozo"]))  
         ->add(\AuthMiddleware::class . ":verificarLoginMW")
@@ -88,6 +92,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
   $group->put('/iniciarPreparacion',\PedidoController::class . ':IniciarPreparacionController');
   $group->put('/finalizarPreparacion',\PedidoController::class . ':FinalizarPreparacionController');
+  $group->put('/cobrarCuenta', \PedidoController::class . ':CobrarCuentaController');
 });
 
 $app->group('/sectores', function (RouteCollectorProxy $group) {
@@ -103,6 +108,11 @@ $app->group('/sectores', function (RouteCollectorProxy $group) {
   $group->get('/barra', \PedidoController::class . ':ListarPedidosSector')
         ->add(new RolMiddleware(["Socio", "bartender"]))
         ->add(\AuthMiddleware::class . ':verificarLoginMW');
+});
+
+$app->group('/calificaciones', function (RouteCollectorProxy $group){
+      $group->post('[/]',\CalificacionController::class . ':CrearUna');
+      $group->get('[/]',\CalificacionController::class . ':ObtenerTodas');
 });
 
 

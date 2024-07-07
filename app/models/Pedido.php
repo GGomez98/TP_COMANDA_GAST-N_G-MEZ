@@ -7,6 +7,7 @@ class Pedido{
     public $estado;
     public $codigoMesa;
     public $codigoPedido;
+    public $precioFinal;
 
     private function obtenerId($table, $param, $atributte){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -38,11 +39,6 @@ class Pedido{
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->execute();
 
-        $mesa = new Mesa();
-        $mesa->codigoMesa = $this->codigoMesa;
-        $mesa->estado = 2;
-        $mesa->modificarMesa();
-
         Pedido::GuardarFoto($imagen, $this->codigoPedido, $this->codigoMesa, $extension);
 
         return $objAccesoDatos->obtenerUltimoId();
@@ -60,7 +56,7 @@ class Pedido{
     public static function obtenerPedido($pedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidos.id, mesas.codigoMesa, estadospedido.nombre as estado, usuarios.usuario as mozo, pedidos.codigoPedido FROM pedidos JOIN mesas on mesas.id = pedidos.idMesa JOIN estadospedido on estadospedido.id = pedidos.idEstado JOIN usuarios on usuarios.id = pedidos.idMozo WHERE codigoPedido = :codigoPedido");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidos.id, mesas.codigoMesa, estadospedido.nombre as estado, usuarios.usuario as mozo, pedidos.codigoPedido, pedidos.precioFinal FROM pedidos JOIN mesas on mesas.id = pedidos.idMesa JOIN estadospedido on estadospedido.id = pedidos.idEstado JOIN usuarios on usuarios.id = pedidos.idMozo WHERE codigoPedido = :codigoPedido");
         $consulta->bindValue(':codigoPedido', $pedido, PDO::PARAM_STR);
         $consulta->execute();
 
@@ -189,7 +185,7 @@ class Pedido{
 
     public static function listarPorductosEnPedidoPorSector($sector){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id as id, menu.nombre as nombre, pedidos.codigoPedido as codigoPedido, estadospedido.nombre as estado, usuarios.usuario as usuarioPreparacion, productospedidos.tiempoPreparacion, sectores.nombre as sector, menu.precio as precio FROM productospedidos JOIN menu ON productospedidos.idProducto = menu.id JOIN sectores ON menu.idSector = sectores.id JOIN pedidos on productospedidos.idPedido = pedidos.id JOIN estadospedido ON productospedidos.idEstado = estadospedido.id JOIN usuarios ON productospedidos.idUsuarioPreparacion = usuarios.id WHERE sectores.id = :idSector AND estadospedido.id=2");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT productospedidos.id as id, menu.nombre as nombre, pedidos.codigoPedido as codigoPedido, estadospedido.nombre as estado, usuarios.usuario as usuarioPreparacion, productospedidos.tiempoPreparacion, sectores.nombre as sector, menu.precio as precio FROM productospedidos JOIN menu ON productospedidos.idProducto = menu.id JOIN sectores ON menu.idSector = sectores.id JOIN pedidos on productospedidos.idPedido = pedidos.id JOIN estadospedido ON productospedidos.idEstado = estadospedido.id JOIN usuarios ON productospedidos.idUsuarioPreparacion = usuarios.id WHERE sectores.id = :idSector AND (estadospedido.id=2 OR estadospedido.id=3)");
         $consulta->bindValue(':idSector', $sector, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -227,5 +223,13 @@ class Pedido{
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
+    public static function CobrarCuenta($codigoPedido, $precio){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET pedidos.precioFinal = :precioFinal WHERE pedidos.codigoPedido = :codigoPedido;");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':precioFinal', $precio);
+        $consulta->execute();
     }
 }

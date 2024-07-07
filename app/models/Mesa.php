@@ -1,10 +1,9 @@
 <?php
-
-//require_once "./Pedido.php";
 class Mesa{
     public $id;
     public $estado;
     public $codigoMesa;
+    public $cantidadUso;
 
     private function obtenerId($table, $param, $atributte){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -23,10 +22,19 @@ class Mesa{
         return $objAccesoDatos->obtenerUltimoId();
     }
 
+    public static function ObtenerMesa($codigoMesa){
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT mesas.id, estadosmesa.nombre as estado, mesas.codigoMesa, mesas.cantidadUso FROM mesas JOIN estadosmesa on estadosmesa.id = mesas.idEstado WHERE mesas.codigoMesa = :codigoMesa;");
+        $consulta->bindValue(":codigoMesa", $codigoMesa, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchObject('Mesa');
+    }
+
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT mesas.id, estadosmesa.nombre as estado, mesas.codigoMesa FROM mesas JOIN estadosmesa on estadosmesa.id = mesas.idEstado;");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT mesas.id, estadosmesa.nombre as estado, mesas.codigoMesa, mesas.cantidadUso FROM mesas JOIN estadosmesa on estadosmesa.id = mesas.idEstado;");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
@@ -88,14 +96,32 @@ class Mesa{
         fclose($file);
     }
 
-    public function modificarMesa()
+    public static function modificarMesa($codigoMesa, $estado)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE mesas SET idEstado = :idEstado WHERE codigoMesa = :codigoMesa");
 
-        $consulta->bindValue(':codigoMesa', $this->codigoMesa, PDO::PARAM_STR);
-        $consulta->bindValue(':idEstado', $this->estado, PDO::PARAM_INT);
+        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta->bindValue(':idEstado', $estado, PDO::PARAM_INT);
 
         $consulta->execute();
+    }
+
+    public static function sumarUsoMesa($codigoMesa){
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE mesas SET cantidadUso = :cantidadUso WHERE codigoMesa = :codigoMesa");
+
+        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta->bindValue(':cantidadUso', Mesa::ObtenerMesa($codigoMesa)->cantidadUso + 1, PDO::PARAM_INT);
+
+        $consulta->execute();
+    }
+
+    public static function ObtenerMesaMasUsada(){
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("SELECT mesas.id, estadosmesa.nombre as estado, mesas.codigoMesa, mesas.cantidadUso FROM mesas JOIN estadosmesa ON mesas.idEstado = estadosmesa.id ORDER BY mesas.cantidadUso DESC LIMIT 1;");
+        $consulta->execute();
+
+        return $consulta->fetchObject('Mesa');
     }
 }

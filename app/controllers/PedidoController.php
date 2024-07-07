@@ -1,5 +1,7 @@
 <?php
 require_once './models/Pedido.php';
+require_once './models/Mesa.php';
+require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
 
 class PedidoController extends Pedido implements IApiUsable
@@ -30,7 +32,10 @@ class PedidoController extends Pedido implements IApiUsable
         $ped->codigoPedido = $codigoPedido;
         $ped->codigoMesa = $codigoMesa;
         $ped->mozo = $mozo;
+
         $ped->crearPedido($_FILES['foto'],$extension);
+
+        Mesa::modificarMesa($ped->codigoMesa, 2);
 
         $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
 
@@ -280,5 +285,60 @@ class PedidoController extends Pedido implements IApiUsable
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function EntregarPedido($request, $response, $args){
+      $parametros = $request->getParsedBody();
+
+      $codigoPedido = $parametros['codigoPedido'];
+
+      $ped = Pedido::obtenerPedido($codigoPedido);
+      $ped->productos = $ped->obtenerProductosDelPedido();
+
+      if($ped->estado == 'listo para servir'){
+        Pedido::CambiarEstadoPedido(5,$codigoPedido);
+        Mesa::modificarMesa($ped->codigoMesa, 3);
+        foreach($ped->productos as $producto){
+          Producto::cambiarEstadoProducto(5, $producto->id);
+        }
+        $payload = json_encode(array("mensaje" => "El pedido fue entregado con exito"));
+      }
+      else{
+        $payload = json_encode(array("mensaje" => "El pedido no esta listo para entregar, no se puede entregar"));
+      }
+
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function CobrarCuentaController($request, $response, $args){
+      $parametros = $request->getParsedBody();
+
+      $codigoPedido = $parametros['codigoPedido'];
+
+      $ped = Pedido::obtenerPedido($codigoPedido);
+      $ped->productos = $ped->obtenerProductosDelPedido();
+      $mesa = Mesa::ObtenerMesa($ped->codigoMesa);
+      $precioTotal = 0;
+
+      if($mesa->estado == 'con cliente comiendo'){
+        Mesa::modificarMesa($ped->codigoMesa, 4);
+        foreach($ped->productos as $producto){
+          $precioTotal += $producto->precio;
+        }
+
+        $ped->precioFinal = $precioTotal;
+        Pedido::CobrarCuenta($codigoPedido,$ped->precioFinal);
+
+        $payload = json_encode(array("mensaje" => "Se cobro la cuenta por un total de $".$ped->precioFinal));
+      }
+      else{
+        $payload = json_encode(array("mensaje" => "Error al cobrar la cuenta"));
+      }
+
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
     }
 }

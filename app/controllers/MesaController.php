@@ -71,4 +71,33 @@ class MesaController extends Mesa implements IApiUsable
       return $response->withHeader('Content-Type', 'application/csv')
                     ->withHeader('Content-Disposition', 'attachment; filename="mesas.csv"');
     }
+
+    public function CerrarMesa($request, $response, $args){
+      $parametros = $request->getParsedBody();
+
+      $codigoMesa = $parametros['codigoMesa'];
+
+      $mesa = Mesa::ObtenerMesa($codigoMesa);
+
+      if($mesa->estado == "con cliente pagando"){
+        Mesa::modificarMesa($codigoMesa, 1);
+        Mesa::sumarUsoMesa($codigoMesa);
+
+        $payload = json_encode(array("mensaje" => "Se cerro la mesa"));
+      }
+      else{
+        $payload = json_encode(array("mensaje" => "Error al cerrar la mesa"));
+      }
+
+      $response->getBody()->write($payload);
+      return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function MostrarMesaMasUsada($request, $response, $args){
+      $mesa = Mesa::ObtenerMesaMasUsada();
+      $response->getBody()->write(json_encode($mesa));
+      return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
 }
