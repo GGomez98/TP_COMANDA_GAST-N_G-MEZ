@@ -68,20 +68,28 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
         ->add(\DatosMiddleware::class . ":cargarMesaMW");
   $group->post('/cargarCSV',\MesaController::class . ':CargarMesasDesdeCSVController');
   $group->post('/descargarCSV',\MesaController::class . ':GuardarMesasEnCSV');
-  $group->put('/cerrarMesa', \MesaController::class . ':CerrarMesa');
+  $group->put('/cerrarMesa', \MesaController::class . ':CerrarMesa')
+        ->add(new RolMiddleware(["Socio"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
-  $group->get('/listosParaServir',\PedidoController::class . ':ObtenerPedidosListosParaSevir');
-  $group->get('[/]', \PedidoController::class . ':TraerTodos');
+  $group->get('/listosParaServir',\PedidoController::class . ':ObtenerPedidosListosParaSevir')
+        ->add(new RolMiddleware(["Mozo"]));
+  $group->get('[/]', \PedidoController::class . ':TraerTodos')
+        ->add(new RolMiddleware(["Mozo"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
-  $group->post('/entregarPedido',\PedidoController::class . ':EntregarPedido');
+  $group->post('/entregarPedido',\PedidoController::class . ':EntregarPedido')
+        ->add(new RolMiddleware(["Mozo"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");  
   $group->post('[/]', \PedidoController::class . ':CargarUno')
         ->add(new RolMiddleware(["Mozo"]))  
         ->add(\AuthMiddleware::class . ":verificarLoginMW")
         ->add(\DatosMiddleware::class . ":cargarPedidoMW");
   $group->post('/agregarProducto', \PedidoController::class . ':AgregarProd')
-        ->add(new RolMiddleware(["Mozo"]));
+        ->add(new RolMiddleware(["Mozo"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");
   $group->post('/tomarOrden', \PedidoController::class . ':TomarOrdenController')
         ->add(new RolMiddleware(["Mozo"]));
   $group->post('/cancelarPedido', \PedidoController::class . ':CancelarPedidoController')
@@ -90,9 +98,15 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
         ->add(\DatosMiddleware::class . ":accionPedidoMW");
   $group->post('/cargarCSV',\PedidoController::class . ':CargarProductosDesdeCSVController');
   $group->post('/descargarCSV',\PedidoController::class . ':GuardarPedidosEnCSV');
-  $group->put('/iniciarPreparacion',\PedidoController::class . ':IniciarPreparacionController');
-  $group->put('/finalizarPreparacion',\PedidoController::class . ':FinalizarPreparacionController');
-  $group->put('/cobrarCuenta', \PedidoController::class . ':CobrarCuentaController');
+  $group->put('/iniciarPreparacion',\PedidoController::class . ':IniciarPreparacionController')
+        ->add(new RolMiddleware(["cocinero","bartender","cervecero","repostero"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");  
+  $group->put('/finalizarPreparacion',\PedidoController::class . ':FinalizarPreparacionController')
+        ->add(new RolMiddleware(["cocinero","bartender","cervecero","repostero"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");
+  $group->put('/cobrarCuenta', \PedidoController::class . ':CobrarCuentaController')
+        ->add(new RolMiddleware(["Mozo"]))
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");  
 });
 
 $app->group('/sectores', function (RouteCollectorProxy $group) {

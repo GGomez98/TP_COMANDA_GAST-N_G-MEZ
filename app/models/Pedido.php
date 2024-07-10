@@ -31,12 +31,14 @@ class Pedido{
     public function crearPedido($imagen, $extension)
     {
         $this->estado = "Realizado";
+        $fechaHoy = new DateTime();
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (idEstado, idMesa, idMozo, codigoPedido) VALUES (:idEstado, :idMesa, :idMozo, :codigoPedido)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (idEstado, idMesa, idMozo, codigoPedido, fechaCreacion) VALUES (:idEstado, :idMesa, :idMozo, :codigoPedido, :fechaCreacion)");
         $consulta->bindValue(':idEstado', $this->obtenerId("estadospedido",":estado",$this->estado), PDO::PARAM_INT);
         $consulta->bindValue(':idMesa', $this->obtenerIdMesa("mesas",":mesa",$this->codigoMesa), PDO::PARAM_INT);
         $consulta->bindValue(':idMozo', $this->obtenerIdMozo(), PDO::PARAM_INT);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':fechaCreacion', $fechaHoy->format('Y-m-d'), PDO::PARAM_STR);
         $consulta->execute();
 
         Pedido::GuardarFoto($imagen, $this->codigoPedido, $this->codigoMesa, $extension);
@@ -169,6 +171,8 @@ class Pedido{
         }
 
         fclose($file);
+
+        return $file;
     }
 
     public static function GuardarFoto($foto, $idPedido, $idMesa, $tipo_archivo)

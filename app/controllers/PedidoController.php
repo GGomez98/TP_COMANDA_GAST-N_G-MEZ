@@ -33,11 +33,26 @@ class PedidoController extends Pedido implements IApiUsable
         $ped->codigoMesa = $codigoMesa;
         $ped->mozo = $mozo;
 
-        $ped->crearPedido($_FILES['foto'],$extension);
-
-        Mesa::modificarMesa($ped->codigoMesa, 2);
-
-        $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+        if(strlen($codigoPedido)==5){
+          if(Mesa::ObtenerMesa($codigoMesa)){
+            if(Mesa::ObtenerMesa($codigoMesa)->estado == 'cerrada'){
+              $ped->crearPedido($_FILES['foto'],$extension);
+    
+              Mesa::modificarMesa($ped->codigoMesa, 2);
+    
+              $payload = json_encode(array("mensaje" => "Pedido creado con exito. Codigo: ".$codigoPedido." Mesa: ".$codigoMesa));
+            }
+            else{
+              $payload = json_encode(array("mensaje" => "Mesa ocupada"));
+            }
+          }
+          else{
+            $payload = json_encode(array("mensaje" => "La mesa no existe"));
+          }
+        }
+        else{
+          $payload = json_encode(array("mensaje" => "Codigo de Pedido Invalido"));
+        }
 
         $response->getBody()->write($payload);
         return $response
@@ -115,16 +130,20 @@ class PedidoController extends Pedido implements IApiUsable
       $ped = Pedido::obtenerPedido($codigoPedido);
 
       $ped->agregarProducto($producto);
-      if($ped->estado == 'realizado'){
-        $payload = json_encode(array("mensaje" => "El producto se cargo al pedido"));
+      if(Producto::obtenerProducto($producto)){
+        if($ped->estado == 'realizado'){
+          $payload = json_encode(array("mensaje" => "El producto se cargo al pedido"));
+        }
+        else{
+          $payload = json_encode(array("mensaje" => "El pedido no se encuentra en estado realizado, no se pueden cargar productos"));
+        }
       }
       else{
-        $payload = json_encode(array("mensaje" => "El pedido no se encuentra en estado realizado, no se pueden cargar productos"));
+        $payload = json_encode(array("mensaje" => "El producto no existe"));
       }
-
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
     }
 
     public function TomarOrdenController($request, $response, $args){
@@ -133,11 +152,12 @@ class PedidoController extends Pedido implements IApiUsable
       $codigoPedido = $parametros['codigoPedido'];
 
       $ped = Pedido::obtenerPedido($codigoPedido);
+
       if($ped->TomarOrden()){
         $payload = json_encode(array("mensaje" => "Se cambio el estado del pedido"));
       }
       else{
-        $payload = json_encode(array("mensaje" => "Esta orden ya se tomo y esta lista para preparar"));
+        $payload = json_encode(array("mensaje" => "No se puede tomar esta orden"));
       }
 
         $response->getBody()->write($payload);
@@ -184,12 +204,12 @@ class PedidoController extends Pedido implements IApiUsable
 
       Pedido::cargarPedidosACSV($filePath);
 
-      $payload = json_encode(array("mensaje" => "El archivo se descargo exitosamente"));
+      $payload = file_get_contents($filePath);
 
         $response->getBody()->write($payload);
 
       return $response->withHeader('Content-Type', 'application/csv')
-                    ->withHeader('Content-Disposition', 'attachment; filename="pedidos.csv"');
+                      ->withHeader('Content-Disposition', 'attachment; filename="pedidos.csv"');
     }
 
     public function ListarPedidosSector($request, $response, $args){
@@ -227,9 +247,15 @@ class PedidoController extends Pedido implements IApiUsable
       $idUsuario = $parametros['usuarioPreparacion'];
       $tiempo = $parametros['tiempoPreparacion'];
 
-      Pedido::IniciarPreparacion($idProducto, $idUsuario, $tiempo);
+      $producto = Producto::obtenerProductoEnPedido($idProducto);
 
-      $payload = json_encode(array("mensaje" => "La preparacion se inicio con exito"));
+      if($producto && $producto->estado == 2){
+        Pedido::IniciarPreparacion($idProducto, $idUsuario, $tiempo);
+        $payload = json_encode(array("mensaje" => "La preparacion se inicio con exito"));
+      }
+      else{
+        $payload = json_encode(array("mensaje" => "Error al iniciar la preparacion de este producto"));
+      }
 
         $response->getBody()->write($payload);
         return $response
@@ -322,7 +348,7 @@ class PedidoController extends Pedido implements IApiUsable
       $mesa = Mesa::ObtenerMesa($ped->codigoMesa);
       $precioTotal = 0;
 
-      if($mesa->estado == 'con cliente comiendo'){
+      if($mesa->estado == 'con cliente comiendo' && $ped->estado == 'entregado' && $ped->precioFinal == null){
         Mesa::modificarMesa($ped->codigoMesa, 4);
         foreach($ped->productos as $producto){
           $precioTotal += $producto->precio;

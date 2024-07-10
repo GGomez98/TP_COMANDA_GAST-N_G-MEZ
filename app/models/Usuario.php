@@ -46,6 +46,16 @@ class Usuario
         return $consulta->fetchObject('Usuario');
     }
 
+    public static function obtenerUsuarioPorId($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchObject('Usuario');
+    }
+
     public static function modificarUsuario($user)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();

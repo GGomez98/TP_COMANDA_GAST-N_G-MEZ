@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-07-2024 a las 03:38:01
+-- Tiempo de generación: 10-07-2024 a las 19:04:51
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,7 +41,10 @@ CREATE TABLE `calificaciones` (
 
 INSERT INTO `calificaciones` (`id`, `descripcion`, `idMesa`, `idPedido`, `puntaje`) VALUES
 (2, 'Deliciosa comida y excelente servicio', 4, 312, 10),
-(3, 'La comida esta muy cara y no era muy buena', 5, 207, 5);
+(3, 'La comida esta muy cara y no era muy buena', 5, 207, 5),
+(4, 'Comida aceptable', 2, 315, 7),
+(5, 'La comida estaba estupenda y la atencion muy buena', 2, 316, 8),
+(6, 'Buena comida a muy buen precio', 2, 317, 5);
 
 -- --------------------------------------------------------
 
@@ -165,16 +168,16 @@ CREATE TABLE `mesas` (
 --
 
 INSERT INTO `mesas` (`id`, `idEstado`, `codigoMesa`, `cantidadUso`) VALUES
-(2, '1', '451as', 0),
+(2, '1', '451as', 3),
 (3, '1', '35f43', 0),
 (4, '1', '654ss', 1),
 (5, '1', '4s4da', 1),
-(6, '2', 'Z6E9v', 0),
+(6, '1', 'Z6E9v', 0),
 (7, '1', 'vP1PB', 0),
 (8, '1', 'fvwUc', 0),
 (9, '1', 'MTT47', 0),
 (10, '1', 'sAXtl', 0),
-(106, '2', 'abcde', 0);
+(106, '1', 'abcde', 0);
 
 -- --------------------------------------------------------
 
@@ -198,7 +201,10 @@ CREATE TABLE `pedidos` (
 
 INSERT INTO `pedidos` (`id`, `idMesa`, `idEstado`, `idMozo`, `codigoPedido`, `precioFinal`, `fechaCreacion`) VALUES
 (207, 5, 5, 65, 'mR5Gg', 56928, '0000-00-00'),
-(312, 4, 5, 65, 'sd45a', 14000, '0000-00-00');
+(312, 4, 5, 65, 'sd45a', 14000, '0000-00-00'),
+(315, 2, 5, 65, 'eb4h5', 14000, '2024-07-07'),
+(316, 2, 5, 65, '5sd6d', 16000, '2024-07-08'),
+(317, 2, 5, 65, 'l0u87', 14000, '2024-07-10');
 
 -- --------------------------------------------------------
 
@@ -262,7 +268,24 @@ INSERT INTO `productospedidos` (`id`, `idProducto`, `idPedido`, `idEstado`, `idU
 (40, 63, 314, 1, 72, 0),
 (41, 63, 314, 1, 72, 0),
 (42, 64, 314, 1, 72, 0),
-(43, 65, 314, 1, 72, 0);
+(43, 65, 314, 1, 72, 0),
+(44, 62, 315, 5, 66, 10),
+(45, 63, 315, 5, 66, 10),
+(46, 63, 315, 5, 66, 10),
+(47, 64, 315, 5, 71, 10),
+(48, 65, 315, 5, 71, 10),
+(49, 62, 316, 5, 71, 5),
+(50, 63, 316, 5, 71, 5),
+(51, 63, 316, 5, 71, 5),
+(52, 64, 316, 5, 71, 3),
+(53, 65, 316, 5, 71, 3),
+(54, 100, 316, 4, 71, 3),
+(55, 65, 316, 5, 71, 3),
+(56, 62, 317, 5, 66, 5),
+(57, 63, 317, 5, 66, 5),
+(58, 63, 317, 5, 66, 5),
+(59, 64, 317, 5, 71, 5),
+(60, 65, 317, 5, 71, 5);
 
 -- --------------------------------------------------------
 
@@ -392,7 +415,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `calificaciones`
 --
 ALTER TABLE `calificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -428,7 +451,7 @@ ALTER TABLE `mesas`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=315;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=318;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -440,7 +463,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `productospedidos`
 --
 ALTER TABLE `productospedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `sectores`
