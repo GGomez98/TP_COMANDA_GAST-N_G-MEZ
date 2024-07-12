@@ -49,7 +49,7 @@ class Usuario
     public static function obtenerUsuarioPorId($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, perfiles.nombre as perfil FROM usuarios JOIN perfiles on perfiles.id = usuarios.idPerfil WHERE id = :id");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuarios.id, usuarios.usuario, usuarios.clave, usuarios.idPerfil FROM usuarios WHERE usuarios.id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
 

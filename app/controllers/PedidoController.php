@@ -3,6 +3,7 @@ require_once './models/Pedido.php';
 require_once './models/Mesa.php';
 require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
+require_once './utils/AutentificadorJWT.php';
 
 class PedidoController extends Pedido implements IApiUsable
 {
@@ -244,17 +245,26 @@ class PedidoController extends Pedido implements IApiUsable
       $parametros = $request->getParsedBody();
 
       $idProducto = $parametros['producto'];
-      $idUsuario = $parametros['usuarioPreparacion'];
+      //$idUsuario = $parametros['usuarioPreparacion'];
       $tiempo = $parametros['tiempoPreparacion'];
 
+      $header = $request->getHeaderLine('Authorization');
+      $token = trim(explode("Bearer", $header)[1]);
+      $usuario = AutentificadorJWT::ObtenerData($token);
       $producto = Producto::obtenerProductoEnPedido($idProducto);
+      $idUsuario = Usuario::obtenerUsuario($usuario->usuario)->id;
 
       if($producto && $producto->estado == 2){
-        Pedido::IniciarPreparacion($idProducto, $idUsuario, $tiempo);
-        $payload = json_encode(array("mensaje" => "La preparacion se inicio con exito"));
+        if($usuario->rol == 'cocinero' && $producto->sector == 3 || $usuario->rol == 'bartender' && $producto->sector == 1 || $usuario->rol == 'cervecero' && $producto->sector == 2|| $usuario->rol == 'repostero' && $producto->sector == 4){
+          Pedido::IniciarPreparacion($idProducto, $idUsuario, $tiempo);
+          $payload = json_encode(array("mensaje" => "La preparacion se inicio con exito"));
+        }
+        else{
+          $payload = json_encode(array("mensaje" => "El usuario no puede iniciar la preparacion de este producto"));
+        }
       }
       else{
-        $payload = json_encode(array("mensaje" => "Error al iniciar la preparacion de este producto"));
+        $payload = json_encode(array("mensaje" => "Este producto no esta listo para preparar"));
       }
 
         $response->getBody()->write($payload);
@@ -269,8 +279,12 @@ class PedidoController extends Pedido implements IApiUsable
       $codigoPedido = $parametros['codigoPedido'];
       $paraServir = true;
 
-      if(Producto::obtenerProductoEnPedido($idProducto)->estado != 3){
-        $payload = json_encode(array("mensaje" => "Este producto no esta en preparacion, no se puede finalizar"));
+      $header = $request->getHeaderLine('Authorization');
+      $token = trim(explode("Bearer", $header)[1]);
+      $usuario = AutentificadorJWT::ObtenerData($token);
+
+      if(Producto::obtenerProductoEnPedido($idProducto)->estado != 3 || Producto::obtenerProductoEnPedido($idProducto)->usuarioPreparacion != Usuario::obtenerUsuario($usuario->usuario)->id){
+        $payload = json_encode(array("mensaje" => "Este producto no esta en preparacion o el usuario no esta a cargo de la misma"));
       }
       else{
         Pedido::FinalizarPreparacion($idProducto);

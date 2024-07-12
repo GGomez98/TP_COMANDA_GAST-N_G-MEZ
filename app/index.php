@@ -77,7 +77,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('/listosParaServir',\PedidoController::class . ':ObtenerPedidosListosParaSevir')
         ->add(new RolMiddleware(["Mozo"]));
   $group->get('[/]', \PedidoController::class . ':TraerTodos')
-        ->add(new RolMiddleware(["Mozo"]))
+        ->add(new RolMiddleware(["Mozo","Socio"]))
         ->add(\AuthMiddleware::class . ":verificarLoginMW");
   $group->get('/{codigoPedido}', \PedidoController::class . ':TraerUno');
   $group->post('/entregarPedido',\PedidoController::class . ':EntregarPedido')
