@@ -367,4 +367,16 @@ class PedidoController extends Pedido implements IApiUsable
       return $response
         ->withHeader('Content-Type', 'application/json');
     }
+
+    public function DescargarPDFController($request, $response, $args){
+      $parametros = $request->getParsedBody();
+      $uploadedFiles = $request->getUploadedFiles();
+
+      $texto = $parametros['texto'];
+      $imagen = $uploadedFiles['imagen'];
+
+      $response->getBody()->write(Pedido::DescargarPDF($texto, $imagen));
+      return $response
+        ->withHeader('Content-Type', 'application/pdf');
+    }
 }

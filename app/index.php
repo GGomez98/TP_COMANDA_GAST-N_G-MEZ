@@ -106,7 +106,8 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
         ->add(\AuthMiddleware::class . ":verificarLoginMW");
   $group->put('/cobrarCuenta', \PedidoController::class . ':CobrarCuentaController')
         ->add(new RolMiddleware(["Mozo"]))
-        ->add(\AuthMiddleware::class . ":verificarLoginMW");  
+        ->add(\AuthMiddleware::class . ":verificarLoginMW");
+  $group->post('/DescargarPDF', \PedidoController::class . ':DescargarPDFController');
 });
 
 $app->group('/sectores', function (RouteCollectorProxy $group) {

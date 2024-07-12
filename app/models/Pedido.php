@@ -1,5 +1,6 @@
 <?php
 require_once './models/Mesa.php';
+use Dompdf\Dompdf;
 class Pedido{
     public $id;
     public $productos;
@@ -235,5 +236,33 @@ class Pedido{
         $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':precioFinal', $precio);
         $consulta->execute();
+    }
+
+    public static function DescargarPDF($text, $imageData){
+        $dompdf = new Dompdf();
+        $imagen = file_get_contents($imageData->getFilePath());
+        $base64Image = base64_encode($imagen);
+        $html = '
+        <html>
+        <head>
+            <style>
+                body { font-family: DejaVu Sans, sans-serif; }
+                .content { text-align: center; }
+                img { max-width: 100%; height: auto; }
+            </style>
+        </head>
+        <body>
+            <div class="content">
+                <img src="data:image/png;base64,' . $base64Image . '" />
+                <p>' . htmlspecialchars($text) . '</p>
+            </div>
+        </body>
+        </html>';
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->output();
     }
 }

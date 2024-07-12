@@ -1100,6 +1100,63 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Descargar PDF",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNjAwMTUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.MUFwwQqgB1vMKPggbaBaXd3xVDF4gt8MT8kURWgm3vc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "texto",
+									"value": "Gracias vuelva prontos",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Desktop/images.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/pedidos/DescargarPDF",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"pedidos",
+								"DescargarPDF"
+							],
+							"query": [
+								{
+									"key": "usuario",
+									"value": "pedro",
+									"disabled": true
+								},
+								{
+									"key": "clave",
+									"value": "dasdqsdw2sd23",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1190,161 +1247,887 @@
 			"name": "Criterios de Evaluacion",
 			"item": [
 				{
-					"name": "08-Cargar Pedido Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxOTI2MjEsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.7u3kxs6k4Kwi3vUheyYFpO04TN89WBYQW-ll887yAjY",
-									"type": "string"
+					"name": "1 y 2-Crear Pedido y tomar foto",
+					"item": [
+						{
+							"name": "08-Cargar Pedido Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAxOTI2MjEsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.7u3kxs6k4Kwi3vUheyYFpO04TN89WBYQW-ll887yAjY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "codigoMesa",
+											"value": "451as",
+											"type": "text"
+										},
+										{
+											"key": "codigoPedido",
+											"value": "l0u87",
+											"type": "text"
+										},
+										{
+											"key": "mozo",
+											"value": "maria_gomez",
+											"type": "text"
+										},
+										{
+											"key": "foto",
+											"type": "file",
+											"src": "/C:/Users/Usuario/Descargas/mesa-buffet-loft-Table-2-1024x683.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "codigoMesa",
-									"value": "451as",
-									"type": "text"
-								},
-								{
-									"key": "codigoPedido",
-									"value": "l0u87",
-									"type": "text"
-								},
-								{
-									"key": "mozo",
-									"value": "maria_gomez",
-									"type": "text"
-								},
-								{
-									"key": "foto",
-									"type": "file",
-									"src": "/C:/Users/Usuario/Descargas/mesa-buffet-loft-Table-2-1024x683.jpg"
+						{
+							"name": "05-Obtener todos los productos Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:666/pedidos",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos"
-							]
+						{
+							"name": "12-Cargar productos al pedido Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MjkwODgsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.IGIXR5H5xM_rmy5ACMnezEr3m5ki6z29xTHZBBkqcBg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "producto",
+											"value": "65",
+											"type": "text"
+										},
+										{
+											"key": "codigoPedido",
+											"value": "l0u87",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/agregarProducto",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"agregarProducto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "09-Obtener todos los pedidos Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MjkwODgsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.IGIXR5H5xM_rmy5ACMnezEr3m5ki6z29xTHZBBkqcBg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/pedidos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "codigoPedido",
+											"value": "eb4h5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "13-Tomar Orden Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAwNjAwMTUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.MUFwwQqgB1vMKPggbaBaXd3xVDF4gt8MT8kURWgm3vc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "codigoPedido",
+											"value": "l0u87",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/tomarOrden",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"tomarOrden"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "05-Obtener todos los productos Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/productos",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"productos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "09-Obtener todos los pedidos Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MjkwODgsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.IGIXR5H5xM_rmy5ACMnezEr3m5ki6z29xTHZBBkqcBg",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/pedidos",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos"
-							],
-							"query": [
-								{
-									"key": "codigoPedido",
-									"value": "eb4h5",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "12-Cargar productos al pedido Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MjkwODgsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.IGIXR5H5xM_rmy5ACMnezEr3m5ki6z29xTHZBBkqcBg",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "producto",
-									"value": "65",
-									"type": "text"
+					"name": "3-Listar productos e iniciar preparacion por sector",
+					"item": [
+						{
+							"name": "24-Obtener productos pedidos a cocina Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk2MzEsImRhdGEiOnsidXN1YXJpbyI6ImNhcmxvc19sb3BleiIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRQIENvbWFuZGEifQ.aWsMZVcnQWzphZNrGdlwF4sr8z3L2Mr8YkxWlw789Qw",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "codigoPedido",
-									"value": "l0u87",
-									"type": "text"
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/sectores/cocina",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"sectores",
+										"cocina"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:666/pedidos/agregarProducto",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos",
-								"agregarProducto"
-							]
+						{
+							"name": "29-Obtener productos pedidos a patio Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk3NDQsImRhdGEiOnsidXN1YXJpbyI6Imx1aXNfcGVyZXoiLCJyb2wiOiJjZXJ2ZWNlcm8ifSwiYXBwIjoiVFAgQ29tYW5kYSJ9._Wn5VNZqMT-SepxJFUawwXc9baYXU4eotTVMxAQm-jQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/sectores/patio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"sectores",
+										"patio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-Obtener todos los usuarios Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAzMTgxNzcsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.2mIzM6uIk1YAanubjBd00e4G-4C4vihbGFsKGZymOlU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "25-Iniciar Preparacion Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk2MzEsImRhdGEiOnsidXN1YXJpbyI6ImNhcmxvc19sb3BleiIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRQIENvbWFuZGEifQ.aWsMZVcnQWzphZNrGdlwF4sr8z3L2Mr8YkxWlw789Qw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n            \"producto\": 60,\r\n            \"tiempoPreparacion\": 5,\r\n            \"usuarioPreparacion\":71\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/iniciarPreparacion",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"iniciarPreparacion"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "13-Tomar Orden Copy",
+					"name": "4-Ver Pedido",
+					"item": [
+						{
+							"name": "10-Obtener un Pedido Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/pedidos/5sd6d",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"5sd6d"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "5-Listado de pedidos",
+					"item": [
+						{
+							"name": "09-Obtener todos los pedidos Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAzMTgxNzcsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.2mIzM6uIk1YAanubjBd00e4G-4C4vihbGFsKGZymOlU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/pedidos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "codigoPedido",
+											"value": "eb4h5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "6-Listar productos y finalizar por sector",
+					"item": [
+						{
+							"name": "24-Obtener productos pedidos a cocina Copy 2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk2MzEsImRhdGEiOnsidXN1YXJpbyI6ImNhcmxvc19sb3BleiIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRQIENvbWFuZGEifQ.aWsMZVcnQWzphZNrGdlwF4sr8z3L2Mr8YkxWlw789Qw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/sectores/cocina",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"sectores",
+										"cocina"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "29-Obtener productos pedidos a patio Copy 2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk3NDQsImRhdGEiOnsidXN1YXJpbyI6Imx1aXNfcGVyZXoiLCJyb2wiOiJjZXJ2ZWNlcm8ifSwiYXBwIjoiVFAgQ29tYW5kYSJ9._Wn5VNZqMT-SepxJFUawwXc9baYXU4eotTVMxAQm-jQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/sectores/patio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"sectores",
+										"patio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-Obtener todos los usuarios Copy 2",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAzMTgxNzcsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.2mIzM6uIk1YAanubjBd00e4G-4C4vihbGFsKGZymOlU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "26-Finalizar Preparacion Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk3NDQsImRhdGEiOnsidXN1YXJpbyI6Imx1aXNfcGVyZXoiLCJyb2wiOiJjZXJ2ZWNlcm8ifSwiYXBwIjoiVFAgQ29tYW5kYSJ9._Wn5VNZqMT-SepxJFUawwXc9baYXU4eotTVMxAQm-jQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n            \"producto\": 60,\r\n            \"codigoPedido\":\"l0u87\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/finalizarPreparacion",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"finalizarPreparacion"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "7-Revisar pedidos listo para servir y cambiar el estado de la mesa",
+					"item": [
+						{
+							"name": "27-Listar pedidos listos para servir Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAwMzUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.RVK2XDFod5aKFziAUR4ecgZQS9UHsH3SuHYSX1XT2vY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/pedidos/listosParaServir",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"listosParaServir"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "28-Entregar Pedido Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAwMzUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.RVK2XDFod5aKFziAUR4ecgZQS9UHsH3SuHYSX1XT2vY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "codigoPedido",
+											"value": "l0u87",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/entregarPedido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"entregarPedido"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "8-Listado de Mesas",
+					"item": [
+						{
+							"name": "07-Obtener todas las mesas Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAyNTMsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.Db0CdzXg6ZwfmVO4JpIUTofC8Lwzqhgh_B75wBpk0jE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "9-Cobrar cuenta",
+					"item": [
+						{
+							"name": "30-Cobrar Cuenta Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAwMzUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.RVK2XDFod5aKFziAUR4ecgZQS9UHsH3SuHYSX1XT2vY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n            \"codigoPedido\": \"l0u87\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/cobrarCuenta",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"cobrarCuenta"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "10-Cerrar la mesa",
+					"item": [
+						{
+							"name": "31- Cerrar Mesa Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n            \"codigoMesa\": \"451as\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/cerrarMesa",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"cerrarMesa"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "11-Encuesta",
+					"item": [
+						{
+							"name": "32-Agregar Calificacion Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "descripcion",
+											"value": "La comida estaba estupenda y la atencion muy buena",
+											"type": "text"
+										},
+										{
+											"key": "codigoPedido",
+											"value": "5sd6d",
+											"type": "text"
+										},
+										{
+											"key": "puntaje",
+											"value": "8",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/calificaciones",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"calificaciones"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "12-Mejores comentarios",
+					"item": [
+						{
+							"name": "35-Obtener los mejores comentarios Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/calificaciones/mejoresComentarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"calificaciones",
+										"mejoresComentarios"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "13-Mesa mas usada",
+					"item": [
+						{
+							"name": "34-Obtener Mesa mas usada Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas/mesaMasUsada",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"mesaMasUsada"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Descargar PDF Copy",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1362,14 +2145,19 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "codigoPedido",
-									"value": "l0u87",
+									"key": "texto",
+									"value": "Gracias vuelva prontos",
 									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Desktop/images.jpeg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:666/pedidos/tomarOrden",
+							"raw": "http://localhost:666/pedidos/DescargarPDF",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1377,444 +2165,38 @@
 							"port": "666",
 							"path": [
 								"pedidos",
-								"tomarOrden"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "24-Obtener productos pedidos a cocina Copy",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk2MzEsImRhdGEiOnsidXN1YXJpbyI6ImNhcmxvc19sb3BleiIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRQIENvbWFuZGEifQ.aWsMZVcnQWzphZNrGdlwF4sr8z3L2Mr8YkxWlw789Qw",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:666/sectores/cocina",
-							"protocol": "http",
-							"host": [
-								"localhost"
+								"DescargarPDF"
 							],
-							"port": "666",
-							"path": [
-								"sectores",
-								"cocina"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "29-Obtener productos pedidos a patio Copy",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+							"query": [
 								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk3NDQsImRhdGEiOnsidXN1YXJpbyI6Imx1aXNfcGVyZXoiLCJyb2wiOiJjZXJ2ZWNlcm8ifSwiYXBwIjoiVFAgQ29tYW5kYSJ9._Wn5VNZqMT-SepxJFUawwXc9baYXU4eotTVMxAQm-jQ",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:666/sectores/patio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"sectores",
-								"patio"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "01-Obtener todos los usuarios Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+									"key": "usuario",
+									"value": "pedro",
+									"disabled": true
+								},
 								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAzMTgxNzcsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.2mIzM6uIk1YAanubjBd00e4G-4C4vihbGFsKGZymOlU",
-									"type": "string"
+									"key": "clave",
+									"value": "dasdqsdw2sd23",
+									"disabled": true
 								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/usuarios",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"usuarios"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "25-Iniciar Preparacion Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk2MzEsImRhdGEiOnsidXN1YXJpbyI6ImNhcmxvc19sb3BleiIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRQIENvbWFuZGEifQ.aWsMZVcnQWzphZNrGdlwF4sr8z3L2Mr8YkxWlw789Qw",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n            \"producto\": 60,\r\n            \"tiempoPreparacion\": 5,\r\n            \"usuarioPreparacion\":71\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:666/pedidos/iniciarPreparacion",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos",
-								"iniciarPreparacion"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "26-Finalizar Preparacion Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2Mjk3NDQsImRhdGEiOnsidXN1YXJpbyI6Imx1aXNfcGVyZXoiLCJyb2wiOiJjZXJ2ZWNlcm8ifSwiYXBwIjoiVFAgQ29tYW5kYSJ9._Wn5VNZqMT-SepxJFUawwXc9baYXU4eotTVMxAQm-jQ",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n            \"producto\": 60,\r\n            \"codigoPedido\":\"l0u87\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:666/pedidos/finalizarPreparacion",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos",
-								"finalizarPreparacion"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "27-Listar pedidos listos para servir Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAwMzUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.RVK2XDFod5aKFziAUR4ecgZQS9UHsH3SuHYSX1XT2vY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/pedidos/listosParaServir",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos",
-								"listosParaServir"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "28-Entregar Pedido Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAwMzUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.RVK2XDFod5aKFziAUR4ecgZQS9UHsH3SuHYSX1XT2vY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "codigoPedido",
-									"value": "l0u87",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:666/pedidos/entregarPedido",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos",
-								"entregarPedido"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "07-Obtener todas las mesas Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAyNTMsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.Db0CdzXg6ZwfmVO4JpIUTofC8Lwzqhgh_B75wBpk0jE",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/mesas",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"mesas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "30-Cobrar Cuenta Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjA2MzAwMzUsImRhdGEiOnsidXN1YXJpbyI6Im1hcmlhX2dvbWV6Iiwicm9sIjoiTW96byJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.RVK2XDFod5aKFziAUR4ecgZQS9UHsH3SuHYSX1XT2vY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n            \"codigoPedido\": \"l0u87\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:666/pedidos/cobrarCuenta",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"pedidos",
-								"cobrarCuenta"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "31- Cerrar Mesa Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n            \"codigoMesa\": \"451as\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:666/mesas/cerrarMesa",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"mesas",
-								"cerrarMesa"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "35-Obtener los mejores comentarios Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/calificaciones/mejoresComentarios",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"calificaciones",
-								"mejoresComentarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "34-Obtener Mesa mas usada Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyODE5NTAsImRhdGEiOnsidXN1YXJpbyI6Imp1YW5fcGVyZXoiLCJyb2wiOiJTb2NpbyJ9LCJhcHAiOiJUUCBDb21hbmRhIn0.oTrozhM5eW7tlojEKX8xp5ltL4XX2dFx0aCXbo_xqLY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:666/mesas/mesaMasUsada",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"mesas",
-								"mesaMasUsada"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "22-Descargar Mesas por CSV Copy",
+					"name": "20-Descargar Pedidos por CSV Copy",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:666/mesas/descargarCSV",
+							"raw": "http://localhost:666/pedidos/descargarCSV",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "666",
 							"path": [
-								"mesas",
+								"pedidos",
 								"descargarCSV"
 							]
 						}
